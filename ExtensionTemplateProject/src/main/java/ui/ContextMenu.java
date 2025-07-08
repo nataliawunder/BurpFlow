@@ -24,29 +24,25 @@ public class ContextMenu implements ContextMenuItemsProvider {
         List<Component> menuItemList = new ArrayList<>();
 
         JMenuItem menuItem = new JMenuItem("Begin Flow on Next Http");
+        // TODO: Implement listener to begin a flow
         menuItem.addActionListener(l -> {montoyaApi.logging().logToOutput("Hello, World.");});
         menuItemList.add(menuItem);
 
         JMenuItem menuItem2 = new JMenuItem("Stop Current Flow");
+        // TODO: Implement listener to stop a flow
         menuItem2.addActionListener(l -> {montoyaApi.logging().logToOutput("Hello, World.");});
         menuItemList.add(menuItem2);
 
-        JMenuItem menuItem3 = new JMenuItem("Add Request to Flow");
-        // have logic to show new context menu 
-        menuItem3.addActionListener(l -> {montoyaApi.logging().logToOutput("Hello, World.");});
-        menuItemList.add(menuItem3);
+        JMenu addRequestMenu = new JMenu("Add Request to Flow");
+        // TODO: Implement loop that creates JMenuItem for all flows available
+        
+        // JMenuItem menuItem3 = new JMenuItem("Add Request to Flow");
+        // // have logic to show new context menu 
+        // menuItem3.addActionListener(l -> {montoyaApi.logging().logToOutput("Hello, World.");});
+        // menuItemList.add(menuItem3);
+
+        menuItemList.add(addRequestMenu);
 
         return menuItemList;
     }
-
-    // public List<Component> provideFlowItems(ContextMenuEvent event) {
-
-    //     List<Component> menuFlowList = new ArrayList<>();
-
-    //     JMenuItem FlowItem = new JMenuItem("Flow");
-    //     FlowItem.addActionListener(l -> {montoyaApi.logging().logToOutput("Flow");});
-    //     menuFlowList.add(FlowItem);
-
-    //     return menuFlowList;
-    // }
 }
