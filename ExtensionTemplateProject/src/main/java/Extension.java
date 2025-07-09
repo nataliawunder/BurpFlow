@@ -12,12 +12,8 @@ public class Extension implements BurpExtension {
         montoyaApi.extension().setName("BurpFlow");
         montoyaApi.userInterface().registerContextMenuItemsProvider(new ui.ContextMenu(montoyaApi));
         
-        // custom tab
         UIManager uiManager = new UIManager(montoyaApi);
         uiManager.registerUI();
-        // JPanel panel = new JPanel();
-        // panel.add(new JLabel("BurpFlow"));
-        // montoyaApi.userInterface().registerSuiteTab("BurpFlow", panel);
         
     }
 }
