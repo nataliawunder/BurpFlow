@@ -21,7 +21,7 @@ public class FlowPanel extends JPanel {
         );
 
         splitPane.setDividerLocation(1500);
-        splitPane.setResizeWeight(1.0);
+        splitPane.setResizeWeight(1.0); // try .5
         splitPane.setOneTouchExpandable(true);
         splitPane.setDividerSize(16);
 
