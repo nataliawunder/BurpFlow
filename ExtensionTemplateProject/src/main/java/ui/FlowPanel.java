@@ -6,7 +6,7 @@ import java.awt.*;
 public class FlowPanel extends JPanel {
     private FlowListSidebar flowListSidebar;
     private RequestGrid requestGrid;
-    private boolean sidebarVisible = true;
+    private JSplitPane splitPane;
 
     public FlowPanel() {
         setLayout(new BorderLayout());
@@ -14,26 +14,18 @@ public class FlowPanel extends JPanel {
         flowListSidebar = new FlowListSidebar();
         requestGrid = new RequestGrid();
 
-        JButton toggleButton = new JButton("⇤ Hide Sidebar");
-        toggleButton.addActionListener(e -> {
-            sidebarVisible = !sidebarVisible;
-            if (sidebarVisible) {
-                add(flowListSidebar, BorderLayout.EAST);
-                toggleButton.setText("⇤ Hide Sidebar");
-            } else {
-                remove(flowListSidebar);
-                toggleButton.setText("⇥ Show Sidebar");
-            }
-            revalidate();
-            repaint();
-        });
+        splitPane = new JSplitPane(
+                JSplitPane.HORIZONTAL_SPLIT,
+                requestGrid,
+                flowListSidebar
+        );
 
-        JPanel topBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        topBar.add(toggleButton);
+        splitPane.setDividerLocation(850);
+        splitPane.setResizeWeight(1.0);
+        splitPane.setOneTouchExpandable(true);
+        splitPane.setDividerSize(8);
 
-        add(topBar, BorderLayout.NORTH);
-        add(requestGrid, BorderLayout.CENTER);
-        add(flowListSidebar, BorderLayout.EAST); // initially visible
+        add(splitPane, BorderLayout.CENTER);
     }
 
     public FlowListSidebar getFlowListSidebar() {
@@ -43,5 +35,8 @@ public class FlowPanel extends JPanel {
     public RequestGrid getRequestGrid() {
         return requestGrid;
     }
-}
 
+    public JSplitPane getSplitPane() {
+        return splitPane;
+    }
+}

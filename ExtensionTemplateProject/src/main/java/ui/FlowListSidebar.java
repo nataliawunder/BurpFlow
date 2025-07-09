@@ -17,11 +17,11 @@ public class FlowListSidebar extends JPanel {
         JPanel topPanel = new JPanel(new BorderLayout());
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-        addButton = new JButton("Add");
-        editButton = new JButton("Edit");
-        deleteButton = new JButton("Delete");
+        addButton = new JButton("Add Flow");
+        editButton = new JButton("Edit Flow");
+        deleteButton = new JButton("Delete Flow");
 
         Dimension buttonSize = new Dimension(70, 25);
         addButton.setPreferredSize(buttonSize);
@@ -34,10 +34,21 @@ public class FlowListSidebar extends JPanel {
 
         searchField = new JTextField();
         searchField.setToolTipText("Search flows...");
-        searchField.setPreferredSize(new Dimension(250, 25));
 
-        topPanel.add(buttonPanel, BorderLayout.NORTH);
-        topPanel.add(searchField, BorderLayout.SOUTH);
+        searchField.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.GRAY, 1, true),
+                BorderFactory.createEmptyBorder(4, 8, 4, 8)
+        ));
+        searchField.setBackground(Color.WHITE);
+        searchField.setPreferredSize(new Dimension(240, 30));
+
+        JPanel searchPanel = new JPanel(new BorderLayout());
+        JLabel searchIcon = new JLabel("\uD83D\uDD0D "); // magnifying glass emoji
+        searchIcon.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+
+        searchPanel.add(searchIcon, BorderLayout.WEST);
+        searchPanel.add(searchField, BorderLayout.CENTER);
+        topPanel.add(searchPanel, BorderLayout.SOUTH);
 
         flowList = new JList<>(new DefaultListModel<>());
         JScrollPane scrollPane = new JScrollPane(flowList);
