@@ -18,12 +18,12 @@ public class FlowListSidebar extends JPanel {
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
         topPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        addButton = new JButton("Add");
-        editButton = new JButton("Edit");
-        deleteButton = new JButton("Delete");
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
+        addButton = new JButton("Add Flow");
+        editButton = new JButton("Edit Flow");
+        deleteButton = new JButton("Delete Flow");
 
-        Dimension buttonSize = new Dimension(70, 25);
+        Dimension buttonSize = new Dimension(100, 25);
         addButton.setPreferredSize(buttonSize);
         editButton.setPreferredSize(buttonSize);
         deleteButton.setPreferredSize(buttonSize);

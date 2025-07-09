@@ -22,12 +22,12 @@ public class UIManager {
 
         // TO DO: SET UP CONFIGURATION TAB
         JPanel configPanel = new JPanel(new BorderLayout());
-        configPanel.add(new JLabel("Configurations go here", SwingConstants.CENTER), BorderLayout.CENTER);
+        configPanel.add(new JLabel("To do", SwingConstants.CENTER), BorderLayout.CENTER);
         burpFlowTabs.addTab("Configurations", configPanel);
 
         // TO DO: SET UP HELP TAB WITH README
         JPanel helpPanel = new JPanel(new BorderLayout());
-        helpPanel.add(new JLabel("<html><center><h2>BurpFlow Help</h2><p>Instructions go here.</p></center></html>", SwingConstants.CENTER), BorderLayout.CENTER);
+        helpPanel.add(new JLabel("ReadMe", SwingConstants.CENTER), BorderLayout.CENTER);
         burpFlowTabs.addTab("Help", helpPanel);
 
         montoyaApi.userInterface().registerSuiteTab("BurpFlow", burpFlowTabs);
