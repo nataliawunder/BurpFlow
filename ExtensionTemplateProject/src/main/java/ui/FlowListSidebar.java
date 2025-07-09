@@ -14,18 +14,15 @@ public class FlowListSidebar extends JPanel {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(250, 0));
 
-        // Top panel with buttons and search
         JPanel topPanel = new JPanel(new BorderLayout());
 
-        // Use a horizontal panel for buttons
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5)); // better spacing
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
         addButton = new JButton("Add");
         editButton = new JButton("Edit");
         deleteButton = new JButton("Delete");
 
-        // Ensure same size (optional)
         Dimension buttonSize = new Dimension(70, 25);
         addButton.setPreferredSize(buttonSize);
         editButton.setPreferredSize(buttonSize);

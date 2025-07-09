@@ -17,16 +17,15 @@ public class UIManager {
     public void registerUI() {
         JTabbedPane burpFlowTabs = new JTabbedPane();
 
-        // Main flow manager panel
         FlowPanel flowPanel = new FlowPanel();
         burpFlowTabs.addTab("Flow Manager", flowPanel);
 
-        // Config tab (placeholder for now)
+        // TO DO: SET UP CONFIGURATION TAB
         JPanel configPanel = new JPanel(new BorderLayout());
         configPanel.add(new JLabel("Configurations go here", SwingConstants.CENTER), BorderLayout.CENTER);
         burpFlowTabs.addTab("Configurations", configPanel);
 
-        // Help tab
+        // TO DO: SET UP HELP TAB WITH README
         JPanel helpPanel = new JPanel(new BorderLayout());
         helpPanel.add(new JLabel("<html><center><h2>BurpFlow Help</h2><p>Instructions go here.</p></center></html>", SwingConstants.CENTER), BorderLayout.CENTER);
         burpFlowTabs.addTab("Help", helpPanel);
