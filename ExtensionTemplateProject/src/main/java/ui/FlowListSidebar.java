@@ -14,12 +14,22 @@ public class FlowListSidebar extends JPanel {
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(250, 0));
 
+        // Top panel with buttons and search
         JPanel topPanel = new JPanel(new BorderLayout());
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-        addButton = new JButton("Add Flow");
-        editButton = new JButton("Edit Flow");
-        deleteButton = new JButton("Delete Flow");
+        // Use a horizontal panel for buttons
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5)); // better spacing
+
+        addButton = new JButton("Add");
+        editButton = new JButton("Edit");
+        deleteButton = new JButton("Delete");
+
+        // Ensure same size (optional)
+        Dimension buttonSize = new Dimension(70, 25);
+        addButton.setPreferredSize(buttonSize);
+        editButton.setPreferredSize(buttonSize);
+        deleteButton.setPreferredSize(buttonSize);
 
         buttonPanel.add(addButton);
         buttonPanel.add(editButton);
@@ -27,11 +37,11 @@ public class FlowListSidebar extends JPanel {
 
         searchField = new JTextField();
         searchField.setToolTipText("Search flows...");
+        searchField.setPreferredSize(new Dimension(250, 25));
 
         topPanel.add(buttonPanel, BorderLayout.NORTH);
         topPanel.add(searchField, BorderLayout.SOUTH);
 
-        // flow list inside
         flowList = new JList<>(new DefaultListModel<>());
         JScrollPane scrollPane = new JScrollPane(flowList);
 
@@ -59,4 +69,3 @@ public class FlowListSidebar extends JPanel {
         return deleteButton;
     }
 }
-
