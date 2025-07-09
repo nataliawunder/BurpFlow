@@ -4,6 +4,7 @@ import burp.api.montoya.MontoyaApi;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import ui.UIManager;
 
 public class Extension implements BurpExtension {
     @Override
@@ -12,9 +13,11 @@ public class Extension implements BurpExtension {
         montoyaApi.userInterface().registerContextMenuItemsProvider(new ui.ContextMenu(montoyaApi));
         
         // custom tab
-        JPanel panel = new JPanel();
-        panel.add(new JLabel("BurpFlow"));
-        montoyaApi.userInterface().registerSuiteTab("BurpFlow", panel);
+        UIManager uiManager = new UIManager(montoyaApi);
+        uiManager.registerUI();
+        // JPanel panel = new JPanel();
+        // panel.add(new JLabel("BurpFlow"));
+        // montoyaApi.userInterface().registerSuiteTab("BurpFlow", panel);
         
     }
 }
