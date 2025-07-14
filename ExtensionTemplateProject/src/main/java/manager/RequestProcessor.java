@@ -18,7 +18,7 @@ public class RequestProcessor implements ProxyRequestHandler {
     @Override
     public ProxyRequestReceivedAction handleRequestReceived(InterceptedRequest interceptedRequest) {
         // TODO 
-        // requestManager.handleIncomingRequest(interceptedRequest);
+        requestManager.handleIncomingRequest(interceptedRequest);
         return ProxyRequestReceivedAction.continueWith(interceptedRequest);
     }
 

@@ -4,6 +4,7 @@ import burp.api.montoya.MontoyaApi;
 
 import burp.api.montoya.ui.contextmenu.ContextMenuItemsProvider;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
+import manager.FlowManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,9 +14,11 @@ import java.util.List;
 public class ContextMenu implements ContextMenuItemsProvider {
 
     private final MontoyaApi montoyaApi;
+    private final FlowManager flowManager;
 
-    public ContextMenu(MontoyaApi montoyaApi) {
+    public ContextMenu(MontoyaApi montoyaApi, FlowManager flowManager) {
         this.montoyaApi = montoyaApi;
+        this.flowManager = flowManager;
     }
 
     @Override
@@ -23,15 +26,22 @@ public class ContextMenu implements ContextMenuItemsProvider {
 
         List<Component> menuItemList = new ArrayList<>();
 
-        JMenuItem menuItem = new JMenuItem("Begin Flow on Next Http");
+        JMenuItem beginFlowItem = new JMenuItem("Begin Flow on Next Http");
         // TODO: Implement listener to begin a flow
-        menuItem.addActionListener(l -> {montoyaApi.logging().logToOutput("Hello, World.");});
-        menuItemList.add(menuItem);
+        beginFlowItem.addActionListener(l -> {
+            String flowName = flowManager.createNextSequentialFlow();
+            flowManager.setActiveFlow(flowName);
+            montoyaApi.logging().logToOutput("Started new flow: " + flowName);
+        });
+        menuItemList.add(beginFlowItem);
 
-        JMenuItem menuItem2 = new JMenuItem("Stop Current Flow");
+        JMenuItem stopFlowItem = new JMenuItem("Stop Current Flow");
         // TODO: Implement listener to stop a flow
-        menuItem2.addActionListener(l -> {montoyaApi.logging().logToOutput("Hello, World.");});
-        menuItemList.add(menuItem2);
+        stopFlowItem.addActionListener(l -> {
+            flowManager.endCurrentFlow();
+            montoyaApi.logging().logToOutput("Stopped current flow.");
+        });
+        menuItemList.add(stopFlowItem);
 
         JMenu addRequestMenu = new JMenu("Add Request to Flow");
         // TODO: Implement loop that creates JMenuItem for all flows available
