@@ -5,7 +5,6 @@ import burp.api.montoya.core.HighlightColor;
 import burp.api.montoya.ui.contextmenu.ContextMenuItemsProvider;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import burp.api.montoya.http.message.HttpRequestResponse;
-import burp.api.montoya.http.message.requests.HttpRequest;
 import manager.FlowManager;
 
 import javax.swing.*;
