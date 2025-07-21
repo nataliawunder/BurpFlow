@@ -3,7 +3,7 @@ package manager;
 import java.util.HashMap;
 import java.util.Map;
 
-import burp.api.montoya.http.message.requests.HttpRequest;
+import burp.api.montoya.http.message.HttpRequestResponse;
 
 public class FlowManager {
 
@@ -49,7 +49,7 @@ public class FlowManager {
         return activeFlowName;
     }
 
-    public void addRequestToActiveFlow(HttpRequest request) {
+    public void addRequestToActiveFlow(HttpRequestResponse request) {
         if (activeFlowName != null) {
             Flow flow = flowMap.get(activeFlowName);
             if (flow != null && flow.isActive()) {
@@ -65,7 +65,7 @@ public class FlowManager {
         }
     }
 
-    public void addRequestToFlow(String flowName, HttpRequest request) {
+    public void addRequestToFlow(String flowName, HttpRequestResponse request) {
         Flow flow = flowMap.get(flowName);
         if (flow != null && flow.isActive()) {
             flow.addRequest(request);

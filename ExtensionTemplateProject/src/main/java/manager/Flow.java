@@ -1,12 +1,12 @@
 package manager;
 
-import burp.api.montoya.http.message.requests.HttpRequest;
+import burp.api.montoya.http.message.HttpRequestResponse;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Flow {
     private final String flowName;
-    private final List<HttpRequest> requests;
+    private final List<HttpRequestResponse> requests;
     private boolean isActive;
 
     public Flow(String flowName) {
@@ -15,7 +15,7 @@ public class Flow {
         this.isActive = false;
     }
 
-    public void addRequest(HttpRequest request) {
+    public void addRequest(HttpRequestResponse request) {
         requests.add(request);
     }
 
@@ -23,7 +23,7 @@ public class Flow {
     //     this.requests.addAll(requests);
     // }
 
-    public void removeRequest(HttpRequest request) {
+    public void removeRequest(HttpRequestResponse request) {
         requests.remove(request);
     }
 
@@ -31,7 +31,7 @@ public class Flow {
     //     this.requests.removeAll(requests);
     // }
 
-    public List<HttpRequest> getRequests() {
+    public List<HttpRequestResponse> getRequests() {
         return requests;
     }
 
