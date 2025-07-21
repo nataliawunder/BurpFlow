@@ -19,9 +19,7 @@ public class Extension implements BurpExtension {
         RequestManager requestManager = new RequestManager(flowManager);
         RequestProcessor requestProcessor = new RequestProcessor(requestManager);
         montoyaApi.proxy().registerRequestHandler(requestProcessor);
-        
-        montoyaApi.userInterface().registerContextMenuItemsProvider(new ui.ContextMenu(montoyaApi, flowManager));
-        
+
         // may need to configure the UI manager to the flow manager in order to intertwine the two
         UIManager uiManager = new UIManager(montoyaApi);
         uiManager.registerUI();
@@ -31,5 +29,7 @@ public class Extension implements BurpExtension {
         RequestGrid requestGrid = flowPanel.getRequestGrid();
 
         FlowDisplayManager flowDisplayManager = new FlowDisplayManager(flowManager, requestGrid, flowListSidebar);
+        
+        montoyaApi.userInterface().registerContextMenuItemsProvider(new ui.ContextMenu(montoyaApi, flowManager, flowDisplayManager));
     }
 }

@@ -5,12 +5,13 @@ import burp.api.montoya.http.message.requests.HttpRequest;
 import burp.api.montoya.proxy.http.InterceptedRequest;
 import burp.api.montoya.proxy.http.InterceptedResponse;
 import burp.api.montoya.MontoyaApi;
+import burp.api.montoya.scope.Scope;
 import burp.api.montoya.core.HighlightColor;
 
 public class RequestManager {
 
     private final FlowManager flowManager;
-    //private final MontoyaApi montoyaApi;
+    // private final MontoyaApi montoyaApi;
 
     public RequestManager(FlowManager flowManager) {
         this.flowManager = flowManager;
@@ -20,10 +21,11 @@ public class RequestManager {
     // should it be intercepted? look at https://portswigger.github.io/burp-extensions-montoya-api/javadoc/burp/api/montoya/proxy/Proxy.html#registerResponseHandler(burp.api.montoya.proxy.http.ProxyResponseHandler)
     public void handleIncomingRequest(InterceptedRequest interceptedRequest) {
         // TODO
-        if (!flowManager.isFlowActive()) {
+        if (!flowManager.isFlowActive() || !interceptedRequest.isInScope()) {
             return;
         }
         // montoyaApi.logging().logToOutput(interceptedRequest.messageId());
+        // montoyaApi.logging().logToOutput(interceptedRequest.bodyToString());
         interceptedRequest.annotations().setHighlightColor(HighlightColor.BLUE);
         flowManager.addRequestToActiveFlow((HttpRequestResponse) interceptedRequest);
     }

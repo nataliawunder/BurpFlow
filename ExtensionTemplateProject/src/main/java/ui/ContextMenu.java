@@ -5,6 +5,7 @@ import burp.api.montoya.core.HighlightColor;
 import burp.api.montoya.ui.contextmenu.ContextMenuItemsProvider;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import burp.api.montoya.http.message.HttpRequestResponse;
+import manager.FlowDisplayManager;
 import manager.FlowManager;
 
 import javax.swing.*;
@@ -16,10 +17,12 @@ public class ContextMenu implements ContextMenuItemsProvider {
 
     private final MontoyaApi montoyaApi;
     private final FlowManager flowManager;
+    private final FlowDisplayManager flowDisplayManager;
 
-    public ContextMenu(MontoyaApi montoyaApi, FlowManager flowManager) {
+    public ContextMenu(MontoyaApi montoyaApi, FlowManager flowManager, FlowDisplayManager flowDisplayManager) {
         this.montoyaApi = montoyaApi;
         this.flowManager = flowManager;
+        this.flowDisplayManager = flowDisplayManager;
     }
 
     @Override
@@ -32,6 +35,7 @@ public class ContextMenu implements ContextMenuItemsProvider {
         beginFlowItem.addActionListener(l -> {
             String flowName = flowManager.createNextSequentialFlow();
             flowManager.setActiveFlow(flowName);
+            flowDisplayManager.refreshFlowList();
             montoyaApi.logging().logToOutput("Started new flow: " + flowName);
         });
         menuItemList.add(beginFlowItem);
@@ -46,12 +50,14 @@ public class ContextMenu implements ContextMenuItemsProvider {
         JMenu addRequestMenu = new JMenu("Add Request to Flow");
         JMenuItem createNewFlowItem = new JMenuItem("Create New Flow");
         createNewFlowItem.addActionListener(l -> {
+            montoyaApi.logging().logToOutput("Trying to create new flow...");
             String newFlow = flowManager.createNextSequentialFlow();
             List<HttpRequestResponse> selectedItems = event.selectedRequestResponses();
             for (HttpRequestResponse item : selectedItems) {
                 flowManager.addRequestToFlow(newFlow, item);
                 item.annotations().setHighlightColor(HighlightColor.BLUE);
             }
+            flowDisplayManager.refreshFlowList();
             montoyaApi.logging().logToOutput("Created new flow and added " + selectedItems.size() + " request(s): " + newFlow);
         });
         addRequestMenu.add(createNewFlowItem);

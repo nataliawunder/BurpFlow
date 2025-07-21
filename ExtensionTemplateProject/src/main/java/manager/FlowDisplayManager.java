@@ -18,13 +18,27 @@ public class FlowDisplayManager {
     private final FlowManager flowManager;
     private final RequestGrid requestGrid;
     private final FlowListSidebar flowListSidebar;
+    private final DefaultListModel<String> listModel;
 
     public FlowDisplayManager(FlowManager flowManager, RequestGrid requestGrid, FlowListSidebar flowListSidebar) {
         this.flowManager = flowManager;
         this.requestGrid = requestGrid;
         this.flowListSidebar = flowListSidebar;
 
+        listModel = new DefaultListModel<>();
+        JList<String> flowList = flowListSidebar.getFlowList();
+        flowList.setModel(listModel);
+
+        refreshFlowList();
+
         setupFlowListListener();
+    }
+
+    public void refreshFlowList() {
+        listModel.clear();
+        for (String flowName : flowManager.getAllFlows().keySet()) {
+            listModel.addElement(flowName);
+        }
     }
 
     private void setupFlowListListener() {
@@ -51,27 +65,32 @@ public class FlowDisplayManager {
             return;
         }
 
-        for (HttpRequestResponse reqRes : flow.getRequests()) {
+        for (HttpRequestResponse requestResponse : flow.getRequests()) {
             //int id = reqRes.messageId();
-            String host = reqRes.httpService().host();
-            String method = reqRes.request().method();
-            String url  = reqRes.request().url().toString();
+            String id = "";
+            String host = requestResponse.httpService().host();
+            String method = requestResponse.request().method();
+            String url  = requestResponse.request().url().toString();
             String status = "";
-            if (reqRes.response() != null) {
-                status = String.valueOf(reqRes.response().statusCode());
+            if (requestResponse.response() != null) {
+                status = String.valueOf(requestResponse.response().statusCode());
             }
             String mimeType = "";
-            if (reqRes.response() != null) {
-                mimeType = reqRes.response().mimeType().toString();
+            if (requestResponse.response() != null) {
+                mimeType = requestResponse.response().mimeType().toString();
             }
             String notes = "";
-            String ip = "";
-            if (reqRes.httpService().ipAddress() != null) {
-                ip = reqRes.httpService().ipAddress();
+            if (requestResponse.annotations().hasNotes()) {
+                notes = requestResponse.annotations().notes();
             }
+            String ip = "";
+            if (requestResponse.httpService().ipAddress() != null) {
+                ip = requestResponse.httpService().ipAddress();
+            }
+            String time = "";
 
             model.addRow(new Object[]{ 
-                host, method, url, status, mimeType, notes, ip 
+                id, host, method, url, status, mimeType, notes, ip, time 
             });
         }
     }

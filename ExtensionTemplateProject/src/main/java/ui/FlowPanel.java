@@ -16,11 +16,11 @@ public class FlowPanel extends JPanel {
 
         splitPane = new JSplitPane(
                 JSplitPane.HORIZONTAL_SPLIT,
-                requestGrid,
-                flowListSidebar
+                flowListSidebar,
+                requestGrid
         );
 
-        splitPane.setDividerLocation(1500);
+        splitPane.setDividerLocation(250);
         splitPane.setResizeWeight(1.0); // try .5
         splitPane.setOneTouchExpandable(true);
         splitPane.setDividerSize(16);
