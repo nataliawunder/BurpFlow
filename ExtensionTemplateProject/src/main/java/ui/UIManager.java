@@ -17,7 +17,6 @@ public class UIManager {
     public void registerUI() {
         JTabbedPane burpFlowTabs = new JTabbedPane();
 
-        FlowPanel flowPanel = new FlowPanel();
         burpFlowTabs.addTab("Flow Manager", flowPanel);
 
         // TO DO: SET UP CONFIGURATION TAB

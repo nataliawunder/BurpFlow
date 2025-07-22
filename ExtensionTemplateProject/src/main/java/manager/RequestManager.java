@@ -2,32 +2,36 @@ package manager;
 
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.http.message.requests.HttpRequest;
+import burp.api.montoya.proxy.ProxyHttpRequestResponse;
 import burp.api.montoya.proxy.http.InterceptedRequest;
 import burp.api.montoya.proxy.http.InterceptedResponse;
 import burp.api.montoya.MontoyaApi;
+import burp.api.montoya.proxy.Proxy;
 import burp.api.montoya.scope.Scope;
 import burp.api.montoya.core.HighlightColor;
 
 public class RequestManager {
 
     private final FlowManager flowManager;
-    // private final MontoyaApi montoyaApi;
+    private final MontoyaApi montoyaApi;
 
-    public RequestManager(FlowManager flowManager) {
+    public RequestManager(MontoyaApi montoyaApi, FlowManager flowManager) {
         this.flowManager = flowManager;
-        // this.montoyaApi = montoyaApi;
+        this.montoyaApi = montoyaApi;
     }
 
     // should it be intercepted? look at https://portswigger.github.io/burp-extensions-montoya-api/javadoc/burp/api/montoya/proxy/Proxy.html#registerResponseHandler(burp.api.montoya.proxy.http.ProxyResponseHandler)
     public void handleIncomingRequest(InterceptedRequest interceptedRequest) {
         // TODO
-        if (!flowManager.isFlowActive() || !interceptedRequest.isInScope()) {
+        // NEED TO CHECK IF SCOPE IS SET, write that it is assumed a scope is set, 
+        // || !interceptedRequest.isInScope()
+        if (!flowManager.isFlowActive()) {
             return;
         }
         // montoyaApi.logging().logToOutput(interceptedRequest.messageId());
-        // montoyaApi.logging().logToOutput(interceptedRequest.bodyToString());
+        //montoyaApi.logging().logToOutput("RequestManager got request " + interceptedRequest.messageId() + " for flow " + flowManager.getActiveFlowName());
         interceptedRequest.annotations().setHighlightColor(HighlightColor.BLUE);
-        flowManager.addRequestToActiveFlow((HttpRequestResponse) interceptedRequest);
+        flowManager.addRequestToActiveFlow((ProxyHttpRequestResponse) interceptedRequest);
     }
 
     public void handleIncomingResponse(InterceptedResponse interceptedResponse) {
