@@ -2,7 +2,6 @@ package manager;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import burp.api.montoya.http.message.HttpRequestResponse;
 
 public class Flow {

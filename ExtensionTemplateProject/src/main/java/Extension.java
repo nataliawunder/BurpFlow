@@ -13,7 +13,7 @@ import manager.*;
 public class Extension implements BurpExtension {
     @Override
     public void initialize(MontoyaApi montoyaApi) {
-        montoyaApi.extension().setName("BurpFlow1");
+        montoyaApi.extension().setName("BurpFlow2");
         
         FlowManager flowManager = new FlowManager();
         RequestManager requestManager = new RequestManager(montoyaApi, flowManager);

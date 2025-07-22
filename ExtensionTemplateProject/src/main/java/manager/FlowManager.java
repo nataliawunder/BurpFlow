@@ -55,8 +55,8 @@ public class FlowManager {
     public void addRequestToActiveFlow(InterceptedRequest request) {
         if (activeFlowName != null) {
             Flow flow = flowMap.get(activeFlowName);
-            FlowEntry entry = new FlowEntry(request);
             if (flow != null && flow.isActive()) {
+                FlowEntry entry = new FlowEntry(request);
                 flow.addEntry(entry);
                 System.out.println("FlowManager added request " + entry.messageId() + " to flow " + activeFlowName + " total " + flow.getEntries().size());
             }
@@ -89,7 +89,7 @@ public class FlowManager {
 
     public void addRequestToFlow(String flowName, HttpRequestResponse request) {
         Flow flow = flowMap.get(flowName);
-        if (flow != null && flow.isActive()) {
+        if (flow != null) {
             flow.addEntry(request);
         }
     }
