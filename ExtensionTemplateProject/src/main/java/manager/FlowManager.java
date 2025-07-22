@@ -3,7 +3,10 @@ package manager;
 import java.util.HashMap;
 import java.util.Map;
 
+import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.proxy.ProxyHttpRequestResponse;
+import burp.api.montoya.proxy.http.InterceptedRequest;
+import burp.api.montoya.proxy.http.InterceptedResponse;
 
 public class FlowManager {
 
@@ -49,12 +52,30 @@ public class FlowManager {
         return activeFlowName;
     }
 
-    public void addRequestToActiveFlow(ProxyHttpRequestResponse request) {
+    public void addRequestToActiveFlow(InterceptedRequest request) {
         if (activeFlowName != null) {
             Flow flow = flowMap.get(activeFlowName);
+            FlowEntry entry = new FlowEntry(request);
             if (flow != null && flow.isActive()) {
-                flow.addRequest(request);
-                System.out.println("FlowManager added message to flow " + activeFlowName + " total " + flow.getRequests().size());
+                flow.addEntry(entry);
+                System.out.println("FlowManager added request " + entry.messageId() + " to flow " + activeFlowName + " total " + flow.getEntries().size());
+            }
+        }
+    }
+
+    public void addResponseToFlow(InterceptedResponse response) {
+        if (!isFlowActive()) {
+            return;
+        }
+
+        Flow f = flowMap.get(activeFlowName);
+        long id = response.messageId();
+       
+        for (FlowEntry entry : f.getEntries()) {
+            if (entry.messageId() == id) {
+                entry.setResponse(response);
+                System.out.println("FlowManager added response " + id + " to " + activeFlowName);
+                break;
             }
         }
     }
@@ -66,10 +87,10 @@ public class FlowManager {
         }
     }
 
-    public void addRequestToFlow(String flowName, ProxyHttpRequestResponse request) {
+    public void addRequestToFlow(String flowName, HttpRequestResponse request) {
         Flow flow = flowMap.get(flowName);
         if (flow != null && flow.isActive()) {
-            flow.addRequest(request);
+            flow.addEntry(request);
         }
     }
 

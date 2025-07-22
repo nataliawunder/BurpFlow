@@ -10,6 +10,8 @@ import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.http.HttpService;
 import burp.api.montoya.http.handler.TimingData;
 import burp.api.montoya.proxy.ProxyHttpRequestResponse;
+import burp.api.montoya.proxy.http.InterceptedRequest;
+import burp.api.montoya.proxy.http.InterceptedResponse;
 
 //import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -86,31 +88,21 @@ public class FlowDisplayManager {
                 return;
             }
 
-            for (ProxyHttpRequestResponse requestResponse : flow.getRequests()) {
-                //int id = reqRes.messageId();
-                String id = "";
-                String host = requestResponse.httpService().host();
-                String method = requestResponse.request().method();
-                String url  = requestResponse.request().url().toString();
-                String status = "";
-                if (requestResponse.response() != null) {
-                    status = String.valueOf(requestResponse.response().statusCode());
-                }
-                String mimeType = "";
-                if (requestResponse.response() != null) {
-                    mimeType = requestResponse.response().mimeType().toString();
-                }
-                String notes = "";
-                if (requestResponse.annotations().hasNotes()) {
-                    notes = requestResponse.annotations().notes();
-                }
-                String ip = "";
-                if (requestResponse.httpService().ipAddress() != null) {
-                    ip = requestResponse.httpService().ipAddress();
-                }
+            for (FlowEntry entry: flow.getEntries()) {
+                InterceptedRequest request = entry.getRequest();
+                Optional<InterceptedResponse> response = entry.getResponse();
+
+                String id = entry.messageId();
+                String host = entry.host();
+                String method = entry.method();
+                String url  = entry.url();
+                String status = entry.status();
+                String mimeType = entry.mimeType();
+                String notes = entry.notes();
+                String ip = entry.ip();
                 ZonedDateTime time = null;
-                if (requestResponse.time() != null) {
-                    time = requestResponse.time();
+                if (request.time() != null) {
+                    time = request.time();
                 }
 
                 model.addRow(new Object[]{ 

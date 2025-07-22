@@ -54,7 +54,7 @@ public class ContextMenu implements ContextMenuItemsProvider {
             String newFlow = flowManager.createNextSequentialFlow();
             List<HttpRequestResponse> selectedItems = event.selectedRequestResponses();
             for (HttpRequestResponse item : selectedItems) {
-                flowManager.addRequestToFlow(newFlow, (ProxyHttpRequestResponse) item);
+                flowManager.addRequestToFlow(newFlow, item);
                 item.annotations().setHighlightColor(HighlightColor.BLUE);
             }
             montoyaApi.logging().logToOutput("Created new flow and added " + selectedItems.size() + " request(s): " + newFlow);
@@ -68,7 +68,7 @@ public class ContextMenu implements ContextMenuItemsProvider {
             flowItem.addActionListener(l -> {
                 List<HttpRequestResponse> selectedItems = event.selectedRequestResponses();
                 for (HttpRequestResponse item : selectedItems) {
-                    flowManager.addRequestToFlow(flowName, (ProxyHttpRequestResponse) item);
+                    flowManager.addRequestToFlow(flowName, item);
                     item.annotations().setHighlightColor(HighlightColor.BLUE);
                 }
                 montoyaApi.logging().logToOutput("Added " + selectedItems.size() + " request(s) to flow: " + flowName);

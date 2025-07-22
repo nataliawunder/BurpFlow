@@ -25,16 +25,19 @@ public class RequestManager {
         // TODO
         // NEED TO CHECK IF SCOPE IS SET, write that it is assumed a scope is set, 
         // || !interceptedRequest.isInScope()
-        if (!flowManager.isFlowActive()) {
+        if (!flowManager.isFlowActive() || !interceptedRequest.isInScope()) {
             return;
         }
-        // montoyaApi.logging().logToOutput(interceptedRequest.messageId());
-        //montoyaApi.logging().logToOutput("RequestManager got request " + interceptedRequest.messageId() + " for flow " + flowManager.getActiveFlowName());
+        montoyaApi.logging().logToOutput("RequestManager request " + interceptedRequest.messageId());
         interceptedRequest.annotations().setHighlightColor(HighlightColor.BLUE);
-        flowManager.addRequestToActiveFlow((ProxyHttpRequestResponse) interceptedRequest);
+        flowManager.addRequestToActiveFlow(interceptedRequest);
     }
 
     public void handleIncomingResponse(InterceptedResponse interceptedResponse) {
-        // TODO
+        if (!flowManager.isFlowActive()) {
+            return;
+        }
+        montoyaApi.logging().logToOutput("RequestManager response " + interceptedResponse.messageId());
+        flowManager.addResponseToFlow(interceptedResponse);
     }
 }
