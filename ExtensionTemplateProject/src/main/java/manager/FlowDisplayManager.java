@@ -62,23 +62,8 @@ public class FlowDisplayManager {
         }
     }
 
-    // private void setupFlowListListener() {
-    //     JList<String> flowList = flowListSidebar.getFlowList();
-    //     flowList.addListSelectionListener(new ListSelectionListener() {
-    //         @Override
-    //         public void valueChanged(ListSelectionEvent e) {
-    //             if (!e.getValueIsAdjusting()) {
-    //                 String selectedFlow = flowList.getSelectedValue();
-    //                 if (selectedFlow != null) {
-    //                     populateRequestGrid(selectedFlow);
-    //                 }
-    //             }
-    //         }
-    //     });
-    // }
-
     private void populateRequestGrid(String flowName) {
-        montoyaApi.logging().logToOutput("populateRequestGrid: " + flowName + " → " + flowManager.getAllFlows().get(flowName).getRequests().size() + " requests");
+        montoyaApi.logging().logToOutput("populateRequestGrid: " + flowName + " → " + flowManager.getAllFlows().get(flowName).getEntries().size() + " requests");
         SwingUtilities.invokeLater(() -> {
             DefaultTableModel model = requestGrid.getTableModel();
             model.setRowCount(0);
@@ -100,10 +85,7 @@ public class FlowDisplayManager {
                 String mimeType = entry.mimeType();
                 String notes = entry.notes();
                 String ip = entry.ip();
-                ZonedDateTime time = null;
-                if (request.time() != null) {
-                    time = request.time();
-                }
+                ZonedDateTime time = entry.time();
 
                 model.addRow(new Object[]{ 
                     id, host, method, url, status, mimeType, notes, ip, time 

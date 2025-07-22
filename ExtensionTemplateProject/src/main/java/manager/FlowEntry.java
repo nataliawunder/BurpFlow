@@ -2,6 +2,7 @@ package manager;
 
 import burp.api.montoya.proxy.http.InterceptedRequest;
 import burp.api.montoya.proxy.http.InterceptedResponse;
+import burp.api.montoya.http.handler.TimingData;
 import burp.api.montoya.http.message.HttpRequestResponse;
 
 import java.time.ZonedDateTime;
@@ -64,15 +65,15 @@ public class FlowEntry {
     }
 
     public String status() {
-        if (interceptedResponse != null) {
-            return interceptedResponse.statusCode();
+        if (interceptedResponse != null && interceptedResponse.isPresent()) {
+            return String.valueOf(interceptedResponse.get().statusCode());
         }
         return String.valueOf(httpRequestResponse.response().statusCode());
     }
 
     public String mimeType() {
-        if (interceptedResponse != null) {
-            return interceptedResponse.mimeType();
+        if (interceptedResponse != null && interceptedResponse.isPresent()) {
+            return interceptedResponse.get().mimeType().toString();
         }
         return httpRequestResponse.response().mimeType().toString();
     }
@@ -92,9 +93,10 @@ public class FlowEntry {
     }
 
     public ZonedDateTime time() {
-        if (interceptedResponse != null) {
-            return interceptedResponse.time();
+        Optional<TimingData> proxyTime = httpRequestResponse.timingData();
+        if (proxyTime != null && proxyTime.isPresent()) {
+            return proxyTime.get().timeRequestSent();
         }
-        return httpRequestResponse.timingData().ZonedDateTime();
+        return null;
     }
 }

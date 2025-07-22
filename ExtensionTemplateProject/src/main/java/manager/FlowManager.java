@@ -72,7 +72,7 @@ public class FlowManager {
         long id = response.messageId();
        
         for (FlowEntry entry : f.getEntries()) {
-            if (entry.messageId() == id) {
+            if (entry.messageId() == String.valueOf(id)) {
                 entry.setResponse(response);
                 System.out.println("FlowManager added response " + id + " to " + activeFlowName);
                 break;
