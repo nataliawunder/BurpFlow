@@ -14,15 +14,16 @@ public class Extension implements BurpExtension {
     @Override
     public void initialize(MontoyaApi montoyaApi) {
         montoyaApi.extension().setName("BurpFlow2");
+
+        // may need to configure the UI manager to the flow manager in order to intertwine the two
+        UIManager uiManager = new UIManager(montoyaApi);
+        uiManager.registerUI();
         
         FlowManager flowManager = new FlowManager();
         RequestManager requestManager = new RequestManager(montoyaApi, flowManager);
         RequestProcessor requestProcessor = new RequestProcessor(requestManager);
         montoyaApi.proxy().registerRequestHandler(requestProcessor);
-
-        // may need to configure the UI manager to the flow manager in order to intertwine the two
-        UIManager uiManager = new UIManager(montoyaApi);
-        uiManager.registerUI();
+        montoyaApi.proxy().registerResponseHandler(requestProcessor);
 
         FlowPanel flowPanel = uiManager.getFlowPanel();
         FlowListSidebar flowListSidebar = flowPanel.getFlowListSidebar();

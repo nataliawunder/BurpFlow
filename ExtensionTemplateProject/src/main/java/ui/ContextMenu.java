@@ -37,6 +37,10 @@ public class ContextMenu implements ContextMenuItemsProvider {
             String flowName = flowManager.createNextSequentialFlow();
             flowManager.setActiveFlow(flowName);
             montoyaApi.logging().logToOutput("Started new flow: " + flowName);
+
+            // debug
+            montoyaApi.logging().logToOutput("ContextMenu| All flows: " + flowManager.getAllFlows().keySet());
+
             flowDisplayManager.refreshFlowList();
         });
         menuItemList.add(beginFlowItem);

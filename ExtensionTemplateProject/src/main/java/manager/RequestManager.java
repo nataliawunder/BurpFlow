@@ -28,7 +28,7 @@ public class RequestManager {
         if (!flowManager.isFlowActive() || !interceptedRequest.isInScope()) {
             return;
         }
-        montoyaApi.logging().logToOutput("RequestManager request " + interceptedRequest.messageId());
+        
         interceptedRequest.annotations().setHighlightColor(HighlightColor.BLUE);
         flowManager.addRequestToActiveFlow(interceptedRequest);
     }

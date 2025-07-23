@@ -65,17 +65,23 @@ public class FlowEntry {
     }
 
     public String status() {
-        if (interceptedResponse != null && interceptedResponse.isPresent()) {
+        if (interceptedResponse.isPresent()) {
             return String.valueOf(interceptedResponse.get().statusCode());
         }
-        return String.valueOf(httpRequestResponse.response().statusCode());
+        if (httpRequestResponse != null && httpRequestResponse.response() != null) {
+            return String.valueOf(httpRequestResponse.response().statusCode());
+        }
+        return "";
     }
 
     public String mimeType() {
-        if (interceptedResponse != null && interceptedResponse.isPresent()) {
+        if (interceptedResponse.isPresent()) {
             return interceptedResponse.get().mimeType().toString();
         }
-        return httpRequestResponse.response().mimeType().toString();
+        if (httpRequestResponse != null && httpRequestResponse.response() != null) {
+            return httpRequestResponse.response().mimeType().toString();
+        }
+        return "";
     }
 
     public String notes() {
@@ -93,10 +99,17 @@ public class FlowEntry {
     }
 
     public ZonedDateTime time() {
-        Optional<TimingData> proxyTime = httpRequestResponse.timingData();
-        if (proxyTime != null && proxyTime.isPresent()) {
-            return proxyTime.get().timeRequestSent();
+        if (interceptedRequest != null) {
+            return null;
         }
+
+        if (httpRequestResponse != null) {
+            Optional<TimingData> timing = httpRequestResponse.timingData();
+            if (timing.isPresent()) {
+                return timing.get().timeRequestSent();
+            }
+        }
+
         return null;
     }
 }

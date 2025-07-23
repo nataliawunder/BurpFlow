@@ -68,10 +68,10 @@ public class FlowManager {
             return;
         }
 
-        Flow f = flowMap.get(activeFlowName);
+        Flow flow = flowMap.get(activeFlowName);
         long id = response.messageId();
        
-        for (FlowEntry entry : f.getEntries()) {
+        for (FlowEntry entry : flow.getEntries()) {
             if (entry.messageId() == String.valueOf(id)) {
                 entry.setResponse(response);
                 System.out.println("FlowManager added response " + id + " to " + activeFlowName);

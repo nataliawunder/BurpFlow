@@ -48,6 +48,8 @@ public class FlowDisplayManager {
         flowList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 String selected = flowList.getSelectedValue();
+                // debug
+                montoyaApi.logging().logToOutput("FlowDisplayManager selected: " + selected);
                 if (selected != null) {
                     populateRequestGrid(selected);
                 }
@@ -55,48 +57,87 @@ public class FlowDisplayManager {
         });
     }
 
+    // public void refreshFlowList() {
+    //     listModel.clear();
+    //     for (String flowName : flowManager.getAllFlows().keySet()) {
+    //         listModel.addElement(flowName);
+    //     }
+    // }
+
     public void refreshFlowList() {
-        listModel.clear();
-        for (String flowName : flowManager.getAllFlows().keySet()) {
-            listModel.addElement(flowName);
-        }
+        SwingUtilities.invokeLater(() -> {
+            listModel.clear();
+            for (String flowName : flowManager.getAllFlows().keySet()) {
+                listModel.addElement(flowName);
+            }
+        });
     }
 
+
     private void populateRequestGrid(String flowName) {
-        montoyaApi.logging().logToOutput("populateRequestGrid: " + flowName + " → " + flowManager.getAllFlows().get(flowName).getEntries().size() + " requests");
-        SwingUtilities.invokeLater(() -> {
-            DefaultTableModel model = requestGrid.getTableModel();
-            model.setRowCount(0);
+        Flow flow = flowManager.getAllFlows().get(flowName);
+        montoyaApi.logging().logToOutput("populateRequestGrid: " + flowName + " → " + (flow == null ? 0 : flow.getEntries().size()) + " entries");
+        
+        DefaultTableModel model = requestGrid.getTableModel();
+        model.setRowCount(0);
 
-            Flow flow = flowManager.getAllFlows().get(flowName);
-            if (flow == null) {
-                return;
+        //Flow flow = flowManager.getAllFlows().get(flowName);
+        montoyaApi.logging().logToOutput("flow" + flow);
+        if (flow == null) {
+            montoyaApi.logging().logToOutput("flow is null");
+            return;
+        }
+
+        for (FlowEntry entry: flow.getEntries()) {
+            try {
+                montoyaApi.logging().logToOutput(
+                    "[FlowDisplayManager] adding row for " + entry.messageId()
+                );
+
+                Object[] row = new Object[]{
+                    entry.messageId(),
+                    entry.host(),
+                    entry.method(),
+                    entry.url(),
+                    entry.status(),
+                    entry.mimeType(),
+                    entry.notes(),
+                    entry.ip(),
+                    entry.time()
+                };
+                model.addRow(row);
+            } 
+            catch (Exception ex) {
+                // THIS WILL TELL YOU WHAT BROKE
+                montoyaApi.logging().logToError(
+                    "[FlowDisplayManager] ERROR adding row for "
+                + entry.messageId() + ": " + ex.getClass().getSimpleName()
+                + " – " + ex.getMessage()
+                );
+                ex.printStackTrace();
             }
+        }
+        
+        montoyaApi.logging().logToOutput("[DEBUG] model.getRowCount() = " 
+        + model.getRowCount());
 
-            for (FlowEntry entry: flow.getEntries()) {
-                InterceptedRequest request = entry.getRequest();
-                Optional<InterceptedResponse> response = entry.getResponse();
+        // **DEBUG #2**: is this the same model the JTable is using?
+        boolean sameModel = requestGrid
+            .getRequestTable()
+            .getModel() == model;
+        montoyaApi.logging().logToOutput("[DEBUG] table.getModel()==model? " 
+            + sameModel);
 
-                String id = entry.messageId();
-                String host = entry.host();
-                String method = entry.method();
-                String url  = entry.url();
-                String status = entry.status();
-                String mimeType = entry.mimeType();
-                String notes = entry.notes();
-                String ip = entry.ip();
-                ZonedDateTime time = entry.time();
+        // **DEBUG #3**: how many columns does the table think it has?
+        int colCount = requestGrid.getRequestTable().getColumnCount();
+        montoyaApi.logging().logToOutput("[DEBUG] table.getColumnCount() = " 
+            + colCount);
 
-                model.addRow(new Object[]{ 
-                    id, host, method, url, status, mimeType, notes, ip, time 
-                });
-            }
-
-            JTable updateRequestGrid = requestGrid.getRequestTable();
-            updateRequestGrid.revalidate();
-            updateRequestGrid.repaint();
-        });
-
+        model.fireTableDataChanged();
+        JTable updateRequestGrid = requestGrid.getRequestTable();
+        updateRequestGrid.revalidate();
+        updateRequestGrid.repaint();
+    
     }
 
 }
