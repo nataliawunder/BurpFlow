@@ -9,7 +9,7 @@ public class RequestGrid extends JPanel {
     private DefaultTableModel tableModel;
 
     private static final String[] COLUMN_NAMES = {
-        "Proxy #", "Host", "Method", "URL", "Status Code", "MIME Type", "Notes", "IP", "Time"
+        "Proxy #", "Host", "Method", "URL", "Status Code", "MIME Type", "Notes", "IP"
     };
 
     public RequestGrid() {

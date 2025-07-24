@@ -6,12 +6,18 @@ import manager.FlowManager;
 import ui.FlowListSidebar;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.List;
 
 public class FlowSidebarController {
     private final FlowManager flowManager;
     private final FlowDisplayManager displayManager;
     private final FlowListSidebar sidebar;
+    private List<String> allFlows;
 
     public FlowSidebarController(FlowManager flowManager, FlowDisplayManager displayManager, FlowListSidebar sidebar) {
         this.flowManager = flowManager;
@@ -19,6 +25,7 @@ public class FlowSidebarController {
         this.sidebar = sidebar;
 
         setupListeners();
+        //setupSearchListener();
     }
 
     private void setupListeners() {
@@ -60,8 +67,28 @@ public class FlowSidebarController {
         });
 
         sidebar.getRefreshButton().addActionListener(e -> {
+            allFlows = flowManager.getAllFlows().keySet().stream().collect(Collectors.toList());
             displayManager.refreshFlowList();
             displayManager.refreshCurrentFlowRequests();
         });
     }
+    
+    // works, but buggy
+    // private void setupSearchListener() {
+    //     JTextField searchField = sidebar.getSearchField();
+    //     allFlows = flowManager.getAllFlows().keySet().stream().toList();
+        
+    //     searchField.addActionListener(e -> {
+    //         String text = searchField.getText().trim().toLowerCase();
+    //         List<String> filtered = allFlows.stream()
+    //                 .filter(name -> name.toLowerCase().contains(text))
+    //                 .toList();
+
+    //         DefaultListModel<String> model = new DefaultListModel<>();
+    //         for (String name : filtered) {
+    //             model.addElement(name);
+    //         }
+    //         sidebar.getFlowList().setModel(model);
+    //     });
+    // }
 }

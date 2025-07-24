@@ -24,13 +24,16 @@ public class FlowListSidebar extends JPanel {
         addButton = new JButton("Add Flow");
         editButton = new JButton("Edit Flow");
         deleteButton = new JButton("Delete Flow");
-        refreshButton = new JButton("Refresh");
+        refreshButton = new JButton("\u21BB");
+        refreshButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        refreshButton.setToolTipText("Refresh Flows");
 
         Dimension buttonSize = new Dimension(100, 25);
+        Dimension smallButtonSize = new Dimension(50, 25);
         addButton.setPreferredSize(buttonSize);
         editButton.setPreferredSize(buttonSize);
         deleteButton.setPreferredSize(buttonSize);
-        refreshButton.setPreferredSize(buttonSize);
+        refreshButton.setPreferredSize(smallButtonSize);
 
         buttonPanel.add(addButton);
         buttonPanel.add(editButton);
@@ -47,7 +50,7 @@ public class FlowListSidebar extends JPanel {
         searchIcon.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 
         searchField = new JTextField();
-        searchField.setToolTipText("Search flows...");
+        searchField.setToolTipText("Search Flows");
         searchField.setPreferredSize(new Dimension(240, 30));
         searchField.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.GRAY, 1, true),

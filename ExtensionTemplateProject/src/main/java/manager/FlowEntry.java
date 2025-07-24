@@ -101,19 +101,4 @@ public class FlowEntry {
         }
         return httpRequestResponse.httpService().ipAddress();
     }
-
-    public ZonedDateTime time() {
-        if (interceptedRequest != null) {
-            return null;
-        }
-
-        if (httpRequestResponse != null) {
-            Optional<TimingData> timing = httpRequestResponse.timingData();
-            if (timing.isPresent()) {
-                return timing.get().timeRequestSent();
-            }
-        }
-
-        return null;
-    }
 }

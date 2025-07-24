@@ -24,8 +24,6 @@ public class FlowDisplayManager {
     private final DefaultListModel<String> listModel;
     private final MontoyaApi montoyaApi;
 
-    //private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss").withZone(ZoneId.systemDefault());
-
     public FlowDisplayManager(MontoyaApi montoyaApi, FlowManager flowManager, RequestGrid requestGrid, FlowListSidebar flowListSidebar, FlowPanel flowPanel) {
         this.flowManager = flowManager;
         this.requestGrid = requestGrid;
@@ -134,17 +132,15 @@ public class FlowDisplayManager {
                     entry.status(),
                     entry.mimeType(),
                     entry.notes(),
-                    entry.ip(),
-                    entry.time()
+                    entry.ip()
                 };
                 model.addRow(row);
             } 
             catch (Exception ex) {
-                // THIS WILL TELL YOU WHAT BROKE
                 montoyaApi.logging().logToError(
                     "[FlowDisplayManager] ERROR adding row for "
-                + entry.messageId() + ": " + ex.getClass().getSimpleName()
-                + " - " + ex.getMessage()
+                    + entry.messageId() + ": " + ex.getClass().getSimpleName()
+                    + " - " + ex.getMessage()
                 );
                 ex.printStackTrace();
             }
