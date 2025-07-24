@@ -13,7 +13,7 @@ import manager.*;
 public class Extension implements BurpExtension {
     @Override
     public void initialize(MontoyaApi montoyaApi) {
-        montoyaApi.extension().setName("BurpFlow2");
+        montoyaApi.extension().setName("BurpFlow3");
 
         // may need to configure the UI manager to the flow manager in order to intertwine the two
         UIManager uiManager = new UIManager(montoyaApi);
@@ -29,7 +29,7 @@ public class Extension implements BurpExtension {
         FlowListSidebar flowListSidebar = flowPanel.getFlowListSidebar();
         RequestGrid requestGrid = flowPanel.getRequestGrid();
 
-        FlowDisplayManager flowDisplayManager = new FlowDisplayManager(montoyaApi, flowManager, requestGrid, flowListSidebar);
+        FlowDisplayManager flowDisplayManager = new FlowDisplayManager(montoyaApi, flowManager, requestGrid, flowListSidebar, flowPanel);
         
         montoyaApi.userInterface().registerContextMenuItemsProvider(new ui.ContextMenu(montoyaApi, flowManager, flowDisplayManager));
         

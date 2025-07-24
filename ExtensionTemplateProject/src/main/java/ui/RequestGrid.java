@@ -40,4 +40,3 @@ public class RequestGrid extends JPanel {
     }
 
 }
-

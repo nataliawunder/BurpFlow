@@ -3,6 +3,7 @@
 package manager;
 
 import ui.FlowListSidebar;
+import ui.FlowPanel;
 import ui.RequestGrid;
 
 import burp.api.montoya.http.message.HttpRequestResponse;
@@ -12,6 +13,8 @@ import burp.api.montoya.http.handler.TimingData;
 import burp.api.montoya.proxy.ProxyHttpRequestResponse;
 import burp.api.montoya.proxy.http.InterceptedRequest;
 import burp.api.montoya.proxy.http.InterceptedResponse;
+import burp.api.montoya.ui.editor.HttpRequestEditor;
+import burp.api.montoya.ui.editor.HttpResponseEditor;
 
 //import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -33,7 +36,7 @@ public class FlowDisplayManager {
 
     //private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss").withZone(ZoneId.systemDefault());
 
-    public FlowDisplayManager(MontoyaApi montoyaApi, FlowManager flowManager, RequestGrid requestGrid, FlowListSidebar flowListSidebar) {
+    public FlowDisplayManager(MontoyaApi montoyaApi, FlowManager flowManager, RequestGrid requestGrid, FlowListSidebar flowListSidebar, FlowPanel flowPanel) {
         this.flowManager = flowManager;
         this.requestGrid = requestGrid;
         this.flowListSidebar = flowListSidebar;
@@ -53,6 +56,43 @@ public class FlowDisplayManager {
                 if (selected != null) {
                     populateRequestGrid(selected);
                 }
+            }
+        });
+
+        JTable requestTable = requestGrid.getRequestTable();
+        requestTable.getSelectionModel().addListSelectionListener(e -> {
+            if (e.getValueIsAdjusting()) {
+                return;
+            }
+            int row = requestTable.getSelectedRow();
+            if (row < 0) {
+                return;
+            }
+
+            String flowName = flowListSidebar.getFlowList().getSelectedValue();
+            Flow flow = flowManager.getAllFlows().get(flowName);
+            FlowEntry entry = flow.getEntries().get(row);
+
+            HttpRequestEditor requestEditor  = flowPanel.getRequestEditor();
+            HttpResponseEditor responseEditor = flowPanel.getResponseEditor();
+
+            // show request
+            if (entry.getRequest() != null) {
+                requestEditor.setRequest(entry.getRequest());
+            } else if (entry.getHttpRequestResponse() != null) {
+                requestEditor.setRequest(entry.getHttpRequestResponse().request());
+            } else {
+                requestEditor.setRequest(null);
+            }
+
+            // show response
+            Optional<InterceptedResponse> response = entry.getResponse();
+            if (response.isPresent()) {
+                responseEditor.setResponse(response.get());
+            } else if (entry.getHttpRequestResponse() != null && entry.getHttpRequestResponse().response() != null) {
+                responseEditor.setResponse(entry.getHttpRequestResponse().response());
+            } else {
+                responseEditor.setResponse(null);
             }
         });
     }

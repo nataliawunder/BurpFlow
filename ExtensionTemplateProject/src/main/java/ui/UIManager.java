@@ -11,7 +11,7 @@ public class UIManager {
 
     public UIManager(MontoyaApi montoyaApi) {
         this.montoyaApi = montoyaApi;
-        this.flowPanel = new FlowPanel();
+        this.flowPanel = new FlowPanel(montoyaApi);
     }
 
     public void registerUI() {

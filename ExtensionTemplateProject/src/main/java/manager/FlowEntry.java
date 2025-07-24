@@ -32,6 +32,10 @@ public class FlowEntry {
         return interceptedResponse;
     }
 
+    public HttpRequestResponse getHttpRequestResponse() {
+        return httpRequestResponse;
+    }
+
     public void setResponse(InterceptedResponse response) {
         this.interceptedResponse = Optional.of(response);
     }
