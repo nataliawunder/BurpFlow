@@ -25,6 +25,7 @@ public class RequestManager {
         // TODO
         // NEED TO CHECK IF SCOPE IS SET, write that it is assumed a scope is set, 
         // || !interceptedRequest.isInScope()
+        // can you see if scope is handled or not
         if (!flowManager.isFlowActive() || !interceptedRequest.isInScope()) {
             return;
         }

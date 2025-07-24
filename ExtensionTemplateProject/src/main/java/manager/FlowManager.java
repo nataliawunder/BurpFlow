@@ -119,6 +119,20 @@ public class FlowManager {
         flowMap.remove(flowName);
     }
 
+    public void renameFlow(String oldName, String newName) {
+        if (!flowMap.containsKey(oldName) || flowMap.containsKey(newName)) {
+            return;
+        }
+
+        Flow flow = flowMap.remove(oldName);
+        flow.setFlowName(newName);
+        flowMap.put(newName, flow);
+
+        if (oldName.equals(activeFlowName)) {
+            activeFlowName = newName;
+        }
+    }
+
     public Map<String, Flow> getAllFlows() {
         return flowMap;
     }

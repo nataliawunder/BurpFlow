@@ -7,12 +7,14 @@ public class FlowListSidebar extends JPanel {
     private JButton addButton;
     private JButton editButton;
     private JButton deleteButton;
+    private JButton refreshButton;
     private JTextField searchField;
     private JList<String> flowList;
 
     public FlowListSidebar() {
         setLayout(new BorderLayout());
-        setPreferredSize(new Dimension(250, 0));
+        setMinimumSize(new Dimension(250, 0));
+        setMaximumSize(new Dimension(250, Integer.MAX_VALUE));
 
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
@@ -22,15 +24,18 @@ public class FlowListSidebar extends JPanel {
         addButton = new JButton("Add Flow");
         editButton = new JButton("Edit Flow");
         deleteButton = new JButton("Delete Flow");
+        refreshButton = new JButton("Refresh");
 
         Dimension buttonSize = new Dimension(100, 25);
         addButton.setPreferredSize(buttonSize);
         editButton.setPreferredSize(buttonSize);
         deleteButton.setPreferredSize(buttonSize);
+        refreshButton.setPreferredSize(buttonSize);
 
         buttonPanel.add(addButton);
         buttonPanel.add(editButton);
         buttonPanel.add(deleteButton);
+        buttonPanel.add(refreshButton);
 
         topPanel.add(buttonPanel);
 
@@ -80,5 +85,9 @@ public class FlowListSidebar extends JPanel {
 
     public JButton getDeleteButton() {
         return deleteButton;
+    }
+
+    public JButton getRefreshButton() {
+        return refreshButton;
     }
 }

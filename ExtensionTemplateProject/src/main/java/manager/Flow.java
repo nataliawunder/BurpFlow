@@ -5,7 +5,7 @@ import java.util.List;
 import burp.api.montoya.http.message.HttpRequestResponse;
 
 public class Flow {
-    private final String flowName;
+    private String flowName;
     private final List<FlowEntry> entries = new ArrayList<>();
     private boolean isActive = false;
 
@@ -36,6 +36,10 @@ public class Flow {
 
     public String getFlowName() {
         return flowName;
+    }
+
+    public void setFlowName(String newName) {
+        this.flowName = newName;
     }
 
     public boolean isActive() {

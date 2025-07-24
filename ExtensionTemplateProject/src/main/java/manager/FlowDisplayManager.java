@@ -1,24 +1,14 @@
-// DOES NOT WORK YET
-
 package manager;
 
 import ui.FlowListSidebar;
 import ui.FlowPanel;
+import ui.FlowSidebarController;
 import ui.RequestGrid;
 
-import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.MontoyaApi;
-import burp.api.montoya.http.HttpService;
-import burp.api.montoya.http.handler.TimingData;
-import burp.api.montoya.proxy.ProxyHttpRequestResponse;
-import burp.api.montoya.proxy.http.InterceptedRequest;
 import burp.api.montoya.proxy.http.InterceptedResponse;
 import burp.api.montoya.ui.editor.HttpRequestEditor;
 import burp.api.montoya.ui.editor.HttpResponseEditor;
-
-//import java.time.ZoneId;
-import java.time.ZonedDateTime;
-//import java.time.format.DateTimeFormatter;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -42,6 +32,7 @@ public class FlowDisplayManager {
         this.flowListSidebar = flowListSidebar;
         this.montoyaApi = montoyaApi;
 
+        new FlowSidebarController(flowManager, this, flowListSidebar);
         listModel = new DefaultListModel<>();
         JList<String> flowList = flowListSidebar.getFlowList();
         flowList.setModel(listModel);
@@ -97,13 +88,6 @@ public class FlowDisplayManager {
         });
     }
 
-    // public void refreshFlowList() {
-    //     listModel.clear();
-    //     for (String flowName : flowManager.getAllFlows().keySet()) {
-    //         listModel.addElement(flowName);
-    //     }
-    // }
-
     public void refreshFlowList() {
         SwingUtilities.invokeLater(() -> {
             listModel.clear();
@@ -113,6 +97,17 @@ public class FlowDisplayManager {
         });
     }
 
+    public void refreshCurrentFlowRequests() {
+        String selected = flowListSidebar.getFlowList().getSelectedValue();
+        if (selected != null) {
+            populateRequestGrid(selected);
+        }
+    }
+
+    public void clearRequests() {
+        DefaultTableModel model = requestGrid.getTableModel();
+        model.setRowCount(0);
+    }
 
     private void populateRequestGrid(String flowName) {
         Flow flow = flowManager.getAllFlows().get(flowName);
@@ -121,10 +116,7 @@ public class FlowDisplayManager {
         DefaultTableModel model = requestGrid.getTableModel();
         model.setRowCount(0);
 
-        //Flow flow = flowManager.getAllFlows().get(flowName);
-        montoyaApi.logging().logToOutput("flow" + flow);
         if (flow == null) {
-            montoyaApi.logging().logToOutput("flow is null");
             return;
         }
 
@@ -152,32 +144,15 @@ public class FlowDisplayManager {
                 montoyaApi.logging().logToError(
                     "[FlowDisplayManager] ERROR adding row for "
                 + entry.messageId() + ": " + ex.getClass().getSimpleName()
-                + " – " + ex.getMessage()
+                + " - " + ex.getMessage()
                 );
                 ex.printStackTrace();
             }
         }
-        
-        montoyaApi.logging().logToOutput("[DEBUG] model.getRowCount() = " 
-        + model.getRowCount());
-
-        // **DEBUG #2**: is this the same model the JTable is using?
-        boolean sameModel = requestGrid
-            .getRequestTable()
-            .getModel() == model;
-        montoyaApi.logging().logToOutput("[DEBUG] table.getModel()==model? " 
-            + sameModel);
-
-        // **DEBUG #3**: how many columns does the table think it has?
-        int colCount = requestGrid.getRequestTable().getColumnCount();
-        montoyaApi.logging().logToOutput("[DEBUG] table.getColumnCount() = " 
-            + colCount);
 
         model.fireTableDataChanged();
         JTable updateRequestGrid = requestGrid.getRequestTable();
         updateRequestGrid.revalidate();
         updateRequestGrid.repaint();
-    
     }
-
 }
