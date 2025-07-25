@@ -13,6 +13,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -41,22 +42,22 @@ public class Extension implements BurpExtension {
         flowManager = new FlowManager();
         // 2) Try to restore flows from the project
         PersistedObject root = montoyaApi.persistence().extensionData();
-
         for (String flowName : root.childObjectKeys()) {
             PersistedObject flowP = root.getChildObject(flowName);
             Flow flow = new Flow(flowName);
 
-            // restore active state
             Boolean active = flowP.getBoolean("active");
             if (active != null && active) {
                 flow.setActive(true);
             }
 
-            // restore each stored request in key order
-            List<String> reqKeys = new ArrayList<>(flowP.httpRequestResponseKeys());
-            // sort by numeric suffix
-            Collections.sort(reqKeys, Comparator.comparingInt(k -> Integer.parseInt(k.substring(3))));
-            for (String rk : reqKeys) {
+            // retrieve all "rN" entries in sorted order
+            List<String> keys = flowP.httpRequestResponseKeys().stream()
+                .filter(k -> k.startsWith("r") && k.substring(1).matches("\\d+"))
+                .sorted(Comparator.comparingInt(k -> Integer.parseInt(k.substring(1))))
+                .collect(Collectors.toList());
+
+            for (String rk : keys) {
                 HttpRequestResponse hrr = flowP.getHttpRequestResponse(rk);
                 flow.addEntry(new FlowEntry(hrr));
             }

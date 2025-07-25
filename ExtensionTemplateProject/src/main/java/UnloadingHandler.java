@@ -30,23 +30,24 @@ public class UnloadingHandler implements ExtensionUnloadingHandler{
         }
 
         // 2) For each flow, create a child PersistedObject
-        for (Map.Entry<String, Flow> fe : flowDisplayManager.getFlowManager().getAllFlows().entrySet()) {
+        for (Map.Entry<String, Flow> fe : displayMgr.getFlowManager().getAllFlows().entrySet()) {
             String flowName = fe.getKey();
             Flow flow       = fe.getValue();
-
-            // attach a new child object
             PersistedObject flowP = PersistedObject.persistedObject();
             root.setChildObject(flowName, flowP);
 
-            // store active flag
             flowP.setBoolean("active", flow.isActive());
 
-            // store each HttpRequestResponse under "req0", "req1", ...
             int i = 0;
             for (FlowEntry entry : flow.getEntries()) {
-                HttpRequestResponse hrr = entry.getHttpRequestResponse();
-                if (hrr != null) {
-                    flowP.setHttpRequestResponse("req" + (i++), hrr);
+                String key = "r" + (i++);
+                if (entry.getHttpRequestResponse() != null) {
+                    // manual‐added
+                    flowP.setHttpRequestResponse(key, entry.getHttpRequestResponse());
+                }
+                else if (entry.getRequest() != null) {
+                    // intercepted request
+                    flowP.setProxyHttpRequestResponse(key, entry.getRequest());
                 }
             }
         }
