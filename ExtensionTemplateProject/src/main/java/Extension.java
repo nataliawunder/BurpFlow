@@ -13,7 +13,7 @@ import manager.*;
 public class Extension implements BurpExtension {
     @Override
     public void initialize(MontoyaApi montoyaApi) {
-        montoyaApi.extension().setName("BurpFlow4");
+        montoyaApi.extension().setName("BurpFlow");
 
         UIManager uiManager = new UIManager(montoyaApi);
         uiManager.registerUI();
