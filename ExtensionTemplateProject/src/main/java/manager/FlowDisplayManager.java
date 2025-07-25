@@ -18,6 +18,8 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import java.util.Map;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -122,6 +124,52 @@ public class FlowDisplayManager {
         if (flow == null) {
             return;
         }
+
+        // class RowData {
+        //     final FlowEntry entry;
+        //     final int proxyIdx;   // -1 if none
+        //     RowData(FlowEntry e, int idx) { entry = e; proxyIdx = idx; }
+        // }
+
+        // List<RowData> numbered   = new ArrayList<>();
+        // List<RowData> unnumbered = new ArrayList<>();
+
+        // for (FlowEntry entry : flow.getEntries()) {
+        //     HttpRequestResponse req = entry.getHttpRequestResponse();
+        //     int idx = -1;
+        //     if (req != null) {
+        //         int found = findMatchingIndex(history, req);
+        //         if (found >= 0) idx = found + 1;  // 1-based
+        //     }
+        //     RowData rd = new RowData(entry, idx);
+        //     if (idx > 0) numbered.add(rd);
+        //     else           unnumbered.add(rd);
+        // }
+
+        // numbered.sort(Comparator.comparingInt(rd -> rd.proxyIdx));
+
+        // can switch for numbers to be last
+        // List<RowData> all = new ArrayList<>(numbered);
+        // all.addAll(unnumbered);
+
+        // for (RowData rd : all) {
+        //     FlowEntry entry = rd.entry;
+        //     String displayNum = rd.proxyIdx > 0
+        //                     ? String.valueOf(rd.proxyIdx)
+        //                     : "";
+
+        //     Object[] row = new Object[]{
+        //         displayNum,
+        //         entry.host(),
+        //         entry.method(),
+        //         entry.url(),
+        //         entry.status(),
+        //         entry.mimeType(),
+        //         entry.notes(),
+        //         entry.ip()
+        //     };
+        //     model.addRow(row);
+        // }
 
         for (FlowEntry entry: flow.getEntries()) {
             try {
