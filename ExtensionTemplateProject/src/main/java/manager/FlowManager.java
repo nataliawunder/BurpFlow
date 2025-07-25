@@ -126,6 +126,10 @@ public class FlowManager {
         flowMap.remove(flowName);
     }
 
+    public void deleteSingleEntry(FlowEntry entry) {
+
+    }
+
     public void renameFlow(String oldName, String newName) {
         if (!flowMap.containsKey(oldName) || flowMap.containsKey(newName)) {
             return;

@@ -6,6 +6,8 @@ import ui.FlowSidebarController;
 import ui.RequestGrid;
 
 import burp.api.montoya.MontoyaApi;
+import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.proxy.ProxyHttpRequestResponse;
 import burp.api.montoya.proxy.http.InterceptedResponse;
 import burp.api.montoya.ui.editor.HttpRequestEditor;
 import burp.api.montoya.ui.editor.HttpResponseEditor;
@@ -14,6 +16,9 @@ import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
+
+import java.util.Map;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -108,6 +113,7 @@ public class FlowDisplayManager {
     }
 
     private void populateRequestGrid(String flowName) {
+        List<ProxyHttpRequestResponse> history = getFullProxyHistory();
         Flow flow = flowManager.getAllFlows().get(flowName);
         
         DefaultTableModel model = requestGrid.getTableModel();
@@ -119,12 +125,24 @@ public class FlowDisplayManager {
 
         for (FlowEntry entry: flow.getEntries()) {
             try {
-                montoyaApi.logging().logToOutput(
-                    "[FlowDisplayManager] adding row for " + entry.messageId()
-                );
+                HttpRequestResponse req = entry.getHttpRequestResponse();
+                String displayNum =  "";
 
+                if (req != null) {
+                    int proxyIndex = findMatchingIndex(history, req);
+                    if (proxyIndex > 0) {
+                        displayNum = String.valueOf(proxyIndex + 1);
+                    }
+                } else {
+                    displayNum = entry.messageId();
+                }
+            
+                // montoyaApi.logging().logToOutput(
+                //     "[FlowDisplayManager] adding row for " + entry.messageId()
+                // );
+                
                 Object[] row = new Object[]{
-                    entry.messageId(),
+                    displayNum,
                     entry.host(),
                     entry.method(),
                     entry.url(),
@@ -149,5 +167,24 @@ public class FlowDisplayManager {
         JTable updateRequestGrid = requestGrid.getRequestTable();
         updateRequestGrid.revalidate();
         updateRequestGrid.repaint();
+    }
+
+    private int findMatchingIndex(List<ProxyHttpRequestResponse> history, HttpRequestResponse target) {
+        for (int i = 0; i < history.size(); i++) {
+            ProxyHttpRequestResponse candidate = history.get(i);
+
+            if (requestsMatch(candidate, target)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private boolean requestsMatch(ProxyHttpRequestResponse proxy, HttpRequestResponse http) {
+        return proxy.request().equals(http.request()) && proxy.response() != null && http.response() != null && proxy.response().equals(http.response());
+    }
+
+    private List<ProxyHttpRequestResponse> getFullProxyHistory() {
+        return montoyaApi.proxy().history();
     }
 }
