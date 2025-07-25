@@ -24,13 +24,6 @@ public class FlowEntry {
         this.httpRequestResponse = null;
     }
 
-    public HttpRequestResponse getPersistable() {
-        if (httpRequestResponse != null) {
-            return httpRequestResponse;
-        }
-        return interceptedRequest;
-    }
-
     public InterceptedRequest getRequest() {
         return interceptedRequest;
     }

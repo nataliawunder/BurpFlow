@@ -27,39 +27,33 @@ public class Extension implements BurpExtension {
 
     @Override
     public void initialize(MontoyaApi montoyaApi) {
-        montoyaApi.extension().setName("BurpFlow");
-
-        // maintain persistence
-        // if (montoyaApi.persistence().preferences().stringKeys().contains("")) {
-        //     _ = montoyaApi.persistence().preferences().getString("");
-        // }
-
-        // pass it into the New instance
+        montoyaApi.extension().setName("BurpFlow5");
 
         UIManager uiManager = new UIManager(montoyaApi);
         uiManager.registerUI();
         
         flowManager = new FlowManager();
-        // 2) Try to restore flows from the project
+        
+        // restore flows from the project
         PersistedObject root = montoyaApi.persistence().extensionData();
+
         for (String flowName : root.childObjectKeys()) {
-            PersistedObject flowP = root.getChildObject(flowName);
+            PersistedObject flowPersisted = root.getChildObject(flowName);
             Flow flow = new Flow(flowName);
 
-            Boolean active = flowP.getBoolean("active");
+            // restore active state
+            Boolean active = flowPersisted.getBoolean("active");
             if (active != null && active) {
                 flow.setActive(true);
             }
 
-            // retrieve all "rN" entries in sorted order
-            List<String> keys = flowP.httpRequestResponseKeys().stream()
-                .filter(k -> k.startsWith("r") && k.substring(1).matches("\\d+"))
-                .sorted(Comparator.comparingInt(k -> Integer.parseInt(k.substring(1))))
-                .collect(Collectors.toList());
-
-            for (String rk : keys) {
-                HttpRequestResponse hrr = flowP.getHttpRequestResponse(rk);
-                flow.addEntry(new FlowEntry(hrr));
+            // restore each stored request in key order
+            List<String> requestKeys = new ArrayList<>(flowPersisted.httpRequestResponseKeys());
+            // sort by numeric suffix
+            Collections.sort(requestKeys, Comparator.comparingInt(k -> Integer.parseInt(k.substring(3))));
+            for (String key : requestKeys) {
+                HttpRequestResponse httpRequestResponse = flowPersisted.getHttpRequestResponse(key);
+                flow.addEntry(new FlowEntry(httpRequestResponse));
             }
 
             flowManager.getAllFlows().put(flowName, flow);

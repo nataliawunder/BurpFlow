@@ -24,30 +24,29 @@ public class UnloadingHandler implements ExtensionUnloadingHandler{
     public void extensionUnloaded() {
         PersistedObject root = montoyaApi.persistence().extensionData();
 
-        // 1) Clear out any old flows
+        // clear out any old flows
         for (String key : root.childObjectKeys()) {
             root.deleteChildObject(key);
         }
 
-        // 2) For each flow, create a child PersistedObject
-        for (Map.Entry<String, Flow> fe : displayMgr.getFlowManager().getAllFlows().entrySet()) {
-            String flowName = fe.getKey();
-            Flow flow       = fe.getValue();
-            PersistedObject flowP = PersistedObject.persistedObject();
-            root.setChildObject(flowName, flowP);
+        // for each flow, create a child PersistedObject
+        for (Map.Entry<String, Flow> flowEntry : flowDisplayManager.getFlowManager().getAllFlows().entrySet()) {
+            String flowName = flowEntry.getKey();
+            Flow flow = flowEntry.getValue();
 
-            flowP.setBoolean("active", flow.isActive());
+            // attach a new child object
+            PersistedObject flowPersisted = PersistedObject.persistedObject();
+            root.setChildObject(flowName, flowPersisted);
 
+            // store active flag
+            flowPersisted.setBoolean("active", flow.isActive());
+
+            // store each HttpRequestResponse under "req0", "req1", ...
             int i = 0;
             for (FlowEntry entry : flow.getEntries()) {
-                String key = "r" + (i++);
-                if (entry.getHttpRequestResponse() != null) {
-                    // manual‐added
-                    flowP.setHttpRequestResponse(key, entry.getHttpRequestResponse());
-                }
-                else if (entry.getRequest() != null) {
-                    // intercepted request
-                    flowP.setProxyHttpRequestResponse(key, entry.getRequest());
+                HttpRequestResponse httpRequestResponse = entry.getHttpRequestResponse();
+                if (httpRequestResponse != null) {
+                    flowPersisted.setHttpRequestResponse("req" + (i++), httpRequestResponse);
                 }
             }
         }
