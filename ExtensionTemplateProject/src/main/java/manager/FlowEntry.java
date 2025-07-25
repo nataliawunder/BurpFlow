@@ -2,7 +2,9 @@ package manager;
 
 import burp.api.montoya.proxy.http.InterceptedRequest;
 import burp.api.montoya.proxy.http.InterceptedResponse;
+import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.http.message.HttpRequestResponse;
+import burp.api.montoya.http.Http;
 
 import java.util.Optional;
 

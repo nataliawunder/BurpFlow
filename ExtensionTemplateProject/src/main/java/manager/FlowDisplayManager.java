@@ -114,6 +114,10 @@ public class FlowDisplayManager {
         model.setRowCount(0);
     }
 
+    public FlowManager getFlowManager() {
+        return flowManager;
+    }
+
     private void populateRequestGrid(String flowName) {
         List<ProxyHttpRequestResponse> history = getFullProxyHistory();
         Flow flow = flowManager.getAllFlows().get(flowName);
