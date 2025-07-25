@@ -47,9 +47,8 @@ public class Extension implements BurpExtension {
                 flow.setActive(true);
             }
 
-            // restore each stored request in key order
+            // restore each stored request in key order, sort by numberic suffix
             List<String> requestKeys = new ArrayList<>(flowPersisted.httpRequestResponseKeys());
-            // sort by numeric suffix
             Collections.sort(requestKeys, Comparator.comparingInt(k -> Integer.parseInt(k.substring(3))));
             for (String key : requestKeys) {
                 HttpRequestResponse httpRequestResponse = flowPersisted.getHttpRequestResponse(key);
