@@ -50,4 +50,3 @@ public class Flow {
         this.isActive = active;
     }
 }
-    

@@ -5,7 +5,6 @@ import burp.api.montoya.core.HighlightColor;
 import burp.api.montoya.ui.contextmenu.ContextMenuItemsProvider;
 import burp.api.montoya.ui.contextmenu.ContextMenuEvent;
 import burp.api.montoya.http.message.HttpRequestResponse;
-import burp.api.montoya.proxy.ProxyHttpRequestResponse;
 import manager.FlowDisplayManager;
 import manager.FlowManager;
 
@@ -37,9 +36,6 @@ public class ContextMenu implements ContextMenuItemsProvider {
             String flowName = flowManager.createNextSequentialFlow();
             flowManager.setActiveFlow(flowName);
             montoyaApi.logging().logToOutput("Started new flow: " + flowName);
-
-            // debug
-            montoyaApi.logging().logToOutput("ContextMenu| All flows: " + flowManager.getAllFlows().keySet());
 
             flowDisplayManager.refreshFlowList();
         });

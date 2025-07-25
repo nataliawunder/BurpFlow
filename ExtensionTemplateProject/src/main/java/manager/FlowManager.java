@@ -1,10 +1,10 @@
 package manager;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import burp.api.montoya.http.message.HttpRequestResponse;
-import burp.api.montoya.proxy.ProxyHttpRequestResponse;
 import burp.api.montoya.proxy.http.InterceptedRequest;
 import burp.api.montoya.proxy.http.InterceptedResponse;
 
@@ -38,6 +38,12 @@ public class FlowManager {
         if (activeFlowName != null) {
             Flow flow = flowMap.get(activeFlowName);
             if (flow != null) {
+                List<FlowEntry> entry = flow.getEntries();
+                if (!entry.isEmpty()) {
+                    FlowEntry last = entry.get(entry.size() - 1);
+                    InterceptedRequest request = last.getRequest();
+                    request.annotations().setNotes("End of " + activeFlowName);
+                }
                 flow.setActive(false);
             }
             activeFlowName = null;
@@ -55,10 +61,12 @@ public class FlowManager {
     public void addRequestToActiveFlow(InterceptedRequest request) {
         if (activeFlowName != null) {
             Flow flow = flowMap.get(activeFlowName);
+            if (flow.getEntries().isEmpty()) {
+                request.annotations().setNotes("Start of " + activeFlowName);
+            }
             if (flow != null && flow.isActive()) {
                 FlowEntry entry = new FlowEntry(request);
                 flow.addEntry(entry);
-                System.out.println("FlowManager added request " + entry.messageId() + " to flow " + activeFlowName + " total " + flow.getEntries().size());
             }
         }
     }
@@ -74,7 +82,6 @@ public class FlowManager {
         for (FlowEntry entry : flow.getEntries()) {
             if (String.valueOf(id).equals(entry.messageId())) {
                 entry.setResponse(response);
-                System.out.println("FlowManager added response " + id + " to " + activeFlowName);
                 break;
             }
         }
@@ -90,12 +97,12 @@ public class FlowManager {
     public void addRequestToFlow(String flowName, HttpRequestResponse request) {
         Flow flow = flowMap.get(flowName);
         if (flow != null) {
+            if (flow.getEntries().isEmpty()) {
+                request.annotations().setNotes("Adding to " + flowName);
+            }
             flow.addEntry(request);
         }
     }
-
-    // TODO: make a addRequestsToFlow plural
-    // Maybe make a non active version as well if in UI
 
     public void beginFlow(String flowName) {
         Flow flow = flowMap.get(flowName);

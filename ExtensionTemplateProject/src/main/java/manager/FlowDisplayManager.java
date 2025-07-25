@@ -109,7 +109,6 @@ public class FlowDisplayManager {
 
     private void populateRequestGrid(String flowName) {
         Flow flow = flowManager.getAllFlows().get(flowName);
-        montoyaApi.logging().logToOutput("populateRequestGrid: " + flowName + " → " + (flow == null ? 0 : flow.getEntries().size()) + " entries");
         
         DefaultTableModel model = requestGrid.getTableModel();
         model.setRowCount(0);

@@ -13,9 +13,8 @@ import manager.*;
 public class Extension implements BurpExtension {
     @Override
     public void initialize(MontoyaApi montoyaApi) {
-        montoyaApi.extension().setName("BurpFlow3");
+        montoyaApi.extension().setName("BurpFlow4");
 
-        // may need to configure the UI manager to the flow manager in order to intertwine the two
         UIManager uiManager = new UIManager(montoyaApi);
         uiManager.registerUI();
         

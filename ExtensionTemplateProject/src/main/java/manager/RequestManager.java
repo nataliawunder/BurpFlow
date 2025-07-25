@@ -14,18 +14,18 @@ public class RequestManager {
 
     private final FlowManager flowManager;
     private final MontoyaApi montoyaApi;
+    private boolean ignoreScope = false;
 
     public RequestManager(MontoyaApi montoyaApi, FlowManager flowManager) {
         this.flowManager = flowManager;
         this.montoyaApi = montoyaApi;
     }
 
-    // should it be intercepted? look at https://portswigger.github.io/burp-extensions-montoya-api/javadoc/burp/api/montoya/proxy/Proxy.html#registerResponseHandler(burp.api.montoya.proxy.http.ProxyResponseHandler)
     public void handleIncomingRequest(InterceptedRequest interceptedRequest) {
-        // TODO
-        // NEED TO CHECK IF SCOPE IS SET, write that it is assumed a scope is set, 
-        // || !interceptedRequest.isInScope()
-        // can you see if scope is handled or not
+        //if (!ignoreScope && !interceptedRequest.isInScope()) {
+        //     return;
+        // }
+        // ADD CONFIGURATION FOR IF IGNORESCOPE IS FALSE
         if (!flowManager.isFlowActive() || !interceptedRequest.isInScope()) {
             return;
         }
@@ -38,7 +38,7 @@ public class RequestManager {
         if (!flowManager.isFlowActive()) {
             return;
         }
-        montoyaApi.logging().logToOutput("RequestManager response " + interceptedResponse.messageId());
+
         flowManager.addResponseToFlow(interceptedResponse);
     }
 }

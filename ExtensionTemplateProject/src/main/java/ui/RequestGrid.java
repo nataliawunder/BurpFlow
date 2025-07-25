@@ -18,7 +18,6 @@ public class RequestGrid extends JPanel {
         tableModel = new DefaultTableModel(COLUMN_NAMES, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                // allow notes to be edited
                 return column == 6;
             }
         };
