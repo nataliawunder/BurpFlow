@@ -47,7 +47,7 @@ public class FlowDisplayManager {
             if (!e.getValueIsAdjusting()) {
                 String selected = flowList.getSelectedValue();
                 // debug
-                montoyaApi.logging().logToOutput("FlowDisplayManager selected: " + selected);
+                // montoyaApi.logging().logToOutput("FlowDisplayManager selected: " + selected);
                 if (selected != null) {
                     populateRequestGrid(selected);
                 }
