@@ -19,7 +19,9 @@ import javax.swing.table.DefaultTableModel;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -145,87 +147,94 @@ public class FlowDisplayManager {
             return;
         }
 
-        // class RowData {
-        //     final FlowEntry entry;
-        //     final int proxyIdx;   // -1 if none
-        //     RowData(FlowEntry e, int idx) { entry = e; proxyIdx = idx; }
-        // }
+        class RowData {
+            final FlowEntry entry;
+            final int proxyIdx;
+            RowData(FlowEntry e, int idx) { entry = e; proxyIdx = idx; }
+        }
 
-        // List<RowData> numbered   = new ArrayList<>();
-        // List<RowData> unnumbered = new ArrayList<>();
+        List<RowData> numbered   = new ArrayList<>();
+        List<RowData> unnumbered = new ArrayList<>();
 
-        // for (FlowEntry entry : flow.getEntries()) {
-        //     HttpRequestResponse req = entry.getHttpRequestResponse();
-        //     int idx = -1;
-        //     if (req != null) {
-        //         int found = findMatchingIndex(history, req);
-        //         if (found >= 0) idx = found + 1;  // 1-based
-        //     }
-        //     RowData rd = new RowData(entry, idx);
-        //     if (idx > 0) numbered.add(rd);
-        //     else           unnumbered.add(rd);
-        // }
-
-        // numbered.sort(Comparator.comparingInt(rd -> rd.proxyIdx));
-
-        // can switch for numbers to be last
-        // List<RowData> all = new ArrayList<>(numbered);
-        // all.addAll(unnumbered);
-
-        // for (RowData rd : all) {
-        //     FlowEntry entry = rd.entry;
-        //     String displayNum = rd.proxyIdx > 0
-        //                     ? String.valueOf(rd.proxyIdx)
-        //                     : "";
-
-        //     Object[] row = new Object[]{
-        //         displayNum,
-        //         entry.host(),
-        //         entry.method(),
-        //         entry.url(),
-        //         entry.status(),
-        //         entry.mimeType(),
-        //         entry.notes(),
-        //         entry.ip()
-        //     };
-        //     model.addRow(row);
-        // }
-
-        for (FlowEntry entry: flow.getEntries()) {
-            try {
-                HttpRequestResponse req = entry.getHttpRequestResponse();
-                String displayNum =  "";
-
-                if (req != null) {
-                    int proxyIndex = findMatchingIndex(history, req);
-                    if (proxyIndex > 0) {
-                        displayNum = String.valueOf(proxyIndex + 1);
-                    }
-                } else {
-                    displayNum = entry.messageId();
-                }
+        for (FlowEntry entry : flow.getEntries()) {
+            HttpRequestResponse request = entry.getHttpRequestResponse();
+            int idx = -1;
+            if (request != null) {
+                int found = findMatchingIndex(history, request);
+                if (found >= 0) idx = found + 1;
+            }
+            RowData rowData = new RowData(entry, idx);
             
-                Object[] row = new Object[]{
-                    displayNum,
-                    entry.host(),
-                    entry.method(),
-                    entry.url(),
-                    entry.status(),
-                    entry.mimeType(),
-                    entry.notes(),
-                    entry.ip()
-                };
-                model.addRow(row);
-            } 
-            catch (Exception ex) {
-                montoyaApi.logging().logToError(
-                    "[FlowDisplayManager] ERROR adding row for "
-                    + entry.messageId() + ": " + ex.getClass().getSimpleName()
-                    + " - " + ex.getMessage()
-                );
-                ex.printStackTrace();
+            if (idx > 0) {
+                numbered.add(rowData);
+            } else {
+                unnumbered.add(rowData);
             }
         }
+
+        numbered.sort(Comparator.comparingInt(rd -> rd.proxyIdx));
+
+        List<RowData> allData = new ArrayList<>(unnumbered);
+        allData.addAll(numbered);
+
+        for (RowData rd : allData) {
+            FlowEntry entry = rd.entry;
+            String displayNum = "";
+            if (rd.proxyIdx > 0) {
+                displayNum = String.valueOf(rd.proxyIdx);
+            } else {
+                displayNum = "";
+            }
+
+            Object[] row = new Object[]{
+                displayNum,
+                entry.host(),
+                entry.method(),
+                entry.url(),
+                entry.status(),
+                entry.mimeType(),
+                entry.notes(),
+                entry.ip()
+            };
+            model.addRow(row);
+        }
+
+        // UNSORTED VERSION:
+        // for (FlowEntry entry: flow.getEntries()) {
+        //     try {
+        //         HttpRequestResponse req = entry.getHttpRequestResponse();
+        //         String displayNum =  "";
+
+        //         if (req != null) {
+        //             int proxyIndex = findMatchingIndex(history, req);
+        //             if (proxyIndex > 0) {
+        //                 displayNum = String.valueOf(proxyIndex + 1);
+        //             }
+        //         } else {
+        //             displayNum = entry.messageId();
+        //         }
+            
+        //         Object[] row = new Object[]{
+        //             displayNum,
+        //             entry.host(),
+        //             entry.method(),
+        //             entry.url(),
+        //             entry.status(),
+        //             entry.mimeType(),
+        //             entry.notes(),
+        //             entry.ip()
+        //         };
+        //         model.addRow(row);
+        //     } 
+        //     catch (Exception ex) {
+        //         montoyaApi.logging().logToError(
+        //             "[FlowDisplayManager] ERROR adding row for "
+        //             + entry.messageId() + ": " + ex.getClass().getSimpleName()
+        //             + " - " + ex.getMessage()
+        //         );
+        //         ex.printStackTrace();
+        //     }
+        // }
 
         model.fireTableDataChanged();
         JTable updateRequestGrid = requestGrid.getRequestTable();
