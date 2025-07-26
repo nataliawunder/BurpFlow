@@ -8,7 +8,7 @@ public class FlowListSidebar extends JPanel {
     private JButton editButton;
     private JButton deleteButton;
     private JButton refreshButton;
-    private JTextField searchField;
+    // private JTextField searchField;
     private JList<String> flowList;
 
     public FlowListSidebar() {
@@ -42,24 +42,24 @@ public class FlowListSidebar extends JPanel {
 
         topPanel.add(buttonPanel);
 
-        JPanel searchPanel = new JPanel(new BorderLayout(5, 5));
-        searchPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+        // JPanel searchPanel = new JPanel(new BorderLayout(5, 5));
+        // searchPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 
-        JLabel searchIcon = new JLabel("\uD83D\uDD0D");
-        searchIcon.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        searchIcon.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+        // JLabel searchIcon = new JLabel("\uD83D\uDD0D");
+        // searchIcon.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        // searchIcon.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 
-        searchField = new JTextField();
-        searchField.setToolTipText("Search Flows");
-        searchField.setPreferredSize(new Dimension(240, 30));
-        searchField.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(Color.GRAY, 1, true),
-                BorderFactory.createEmptyBorder(4, 8, 4, 8)
-        ));
+        // searchField = new JTextField();
+        // searchField.setToolTipText("Search Flows");
+        // searchField.setPreferredSize(new Dimension(240, 30));
+        // searchField.setBorder(BorderFactory.createCompoundBorder(
+        //         BorderFactory.createLineBorder(Color.GRAY, 1, true),
+        //         BorderFactory.createEmptyBorder(4, 8, 4, 8)
+        // ));
 
-        searchPanel.add(searchIcon, BorderLayout.WEST);
-        searchPanel.add(searchField, BorderLayout.CENTER);
-        topPanel.add(searchPanel);
+        // searchPanel.add(searchIcon, BorderLayout.WEST);
+        // searchPanel.add(searchField, BorderLayout.CENTER);
+        // topPanel.add(searchPanel);
 
         add(topPanel, BorderLayout.NORTH);
 
@@ -74,9 +74,9 @@ public class FlowListSidebar extends JPanel {
         return flowList;
     }
 
-    public JTextField getSearchField() {
-        return searchField;
-    }
+    // public JTextField getSearchField() {
+    //     return searchField;
+    // }
 
     public JButton getAddButton() {
         return addButton;

@@ -2,21 +2,11 @@ import burp.api.montoya.BurpExtension;
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.http.message.HttpRequestResponse;
 import burp.api.montoya.persistence.PersistedObject;
-import burp.api.montoya.persistence.Preferences;
 
-import javax.swing.*;
-import java.awt.*;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import ui.*;
 import ui.UIManager;
@@ -27,7 +17,7 @@ public class Extension implements BurpExtension {
 
     @Override
     public void initialize(MontoyaApi montoyaApi) {
-        montoyaApi.extension().setName("BurpFlow5");
+        montoyaApi.extension().setName("BurpFlow");
 
         UIManager uiManager = new UIManager(montoyaApi);
         uiManager.registerUI();

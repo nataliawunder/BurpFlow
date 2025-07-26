@@ -1,15 +1,11 @@
 package ui;
 
-import manager.Flow;
 import manager.FlowDisplayManager;
 import manager.FlowManager;
-import ui.FlowListSidebar;
+
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
-import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.List;
 
@@ -25,7 +21,6 @@ public class FlowSidebarController {
         this.sidebar = sidebar;
 
         setupListeners();
-        //setupSearchListener();
     }
 
     private void setupListeners() {
@@ -72,23 +67,4 @@ public class FlowSidebarController {
             displayManager.refreshCurrentFlowRequests();
         });
     }
-    
-    // works, but buggy
-    // private void setupSearchListener() {
-    //     JTextField searchField = sidebar.getSearchField();
-    //     allFlows = flowManager.getAllFlows().keySet().stream().toList();
-        
-    //     searchField.addActionListener(e -> {
-    //         String text = searchField.getText().trim().toLowerCase();
-    //         List<String> filtered = allFlows.stream()
-    //                 .filter(name -> name.toLowerCase().contains(text))
-    //                 .toList();
-
-    //         DefaultListModel<String> model = new DefaultListModel<>();
-    //         for (String name : filtered) {
-    //             model.addElement(name);
-    //         }
-    //         sidebar.getFlowList().setModel(model);
-    //     });
-    // }
 }

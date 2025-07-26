@@ -13,8 +13,6 @@ import burp.api.montoya.ui.editor.HttpRequestEditor;
 import burp.api.montoya.ui.editor.HttpResponseEditor;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.event.MouseAdapter;
@@ -198,43 +196,6 @@ public class FlowDisplayManager {
             };
             model.addRow(row);
         }
-
-        // UNSORTED VERSION:
-        // for (FlowEntry entry: flow.getEntries()) {
-        //     try {
-        //         HttpRequestResponse req = entry.getHttpRequestResponse();
-        //         String displayNum =  "";
-
-        //         if (req != null) {
-        //             int proxyIndex = findMatchingIndex(history, req);
-        //             if (proxyIndex > 0) {
-        //                 displayNum = String.valueOf(proxyIndex + 1);
-        //             }
-        //         } else {
-        //             displayNum = entry.messageId();
-        //         }
-            
-        //         Object[] row = new Object[]{
-        //             displayNum,
-        //             entry.host(),
-        //             entry.method(),
-        //             entry.url(),
-        //             entry.status(),
-        //             entry.mimeType(),
-        //             entry.notes(),
-        //             entry.ip()
-        //         };
-        //         model.addRow(row);
-        //     } 
-        //     catch (Exception ex) {
-        //         montoyaApi.logging().logToError(
-        //             "[FlowDisplayManager] ERROR adding row for "
-        //             + entry.messageId() + ": " + ex.getClass().getSimpleName()
-        //             + " - " + ex.getMessage()
-        //         );
-        //         ex.printStackTrace();
-        //     }
-        // }
 
         model.fireTableDataChanged();
         JTable updateRequestGrid = requestGrid.getRequestTable();
