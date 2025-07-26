@@ -30,7 +30,6 @@ public class ContextMenu implements ContextMenuItemsProvider {
 
         List<Component> menuItemList = new ArrayList<>();
 
-        // TO-DO: MAKE ADD NOTE FOR WHEN IT STARTS AND STOPS
         JMenuItem beginFlowItem = new JMenuItem("Begin Flow on Next Http");
         beginFlowItem.addActionListener(l -> {
             String flowName = flowManager.createNextSequentialFlow();

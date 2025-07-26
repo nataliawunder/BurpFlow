@@ -17,10 +17,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
-import java.util.Map;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,6 +88,23 @@ public class FlowDisplayManager {
                 responseEditor.setResponse(entry.getHttpRequestResponse().response());
             } else {
                 responseEditor.setResponse(null);
+            }
+        });
+
+        requestTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if (e.isPopupTrigger() && requestTable.isEnabled()) {
+                    int row = requestTable.rowAtPoint(e.getPoint());
+                    if (row < 0) {
+                        return;
+                    }
+                    if (!requestTable.getSelectionModel().isSelectedIndex(row)) {
+                        requestTable.getSelectionModel()
+                            .setSelectionInterval(row, row);
+                    }
+                    showRequestPopup(e, row);
+                }
             }
         });
     }
@@ -189,10 +205,6 @@ public class FlowDisplayManager {
                     displayNum = entry.messageId();
                 }
             
-                // montoyaApi.logging().logToOutput(
-                //     "[FlowDisplayManager] adding row for " + entry.messageId()
-                // );
-                
                 Object[] row = new Object[]{
                     displayNum,
                     entry.host(),
@@ -238,5 +250,74 @@ public class FlowDisplayManager {
 
     private List<ProxyHttpRequestResponse> getFullProxyHistory() {
         return montoyaApi.proxy().history();
+    }
+
+    private void showRequestPopup(MouseEvent event, int row) {
+        JPopupMenu menu = new JPopupMenu();
+
+        JMenuItem repeaterItem = new JMenuItem("Send to Repeater");
+        repeaterItem.addActionListener(ae -> {
+            String flowName = flowListSidebar.getFlowList().getSelectedValue();
+            FlowEntry entry = flowManager.getAllFlows()
+                                .get(flowName)
+                                .getEntries()
+                                .get(row);
+            if (entry.getRequest() != null) {
+                montoyaApi.repeater().sendToRepeater(
+                    entry.getRequest()
+                );
+            } else if (entry.getHttpRequestResponse() != null) {
+                montoyaApi.repeater().sendToRepeater(
+                    entry.getHttpRequestResponse().request()
+                );
+            }
+        });
+        menu.add(repeaterItem);
+
+        JMenuItem intruderItem = new JMenuItem("Send to Intruder");
+        intruderItem.addActionListener(ae -> {
+            String flowName = flowListSidebar.getFlowList().getSelectedValue();
+            FlowEntry entry = flowManager.getAllFlows()
+                                .get(flowName)
+                                .getEntries()
+                                .get(row);
+            if (entry.getRequest() != null) {
+                montoyaApi.intruder().sendToIntruder(
+                    entry.getRequest()
+                );
+            } else if (entry.getHttpRequestResponse() != null) {
+                montoyaApi.intruder().sendToIntruder(
+                    entry.getHttpRequestResponse().request()
+                );
+            }
+        });
+        menu.add(intruderItem);
+
+        JMenuItem deleteItem = new JMenuItem("Delete Request(s)");
+        deleteItem.addActionListener(ae -> {
+            deleteSelectedRequests();
+        });
+        menu.addSeparator();
+        menu.add(deleteItem);
+
+        menu.show(event.getComponent(), event.getX(), event.getY());
+    }
+
+    private void deleteSelectedRequests() {
+        JTable table = requestGrid.getRequestTable();
+        int[] rows = table.getSelectedRows();
+        if (rows.length == 0) return;
+
+        String flowName = flowListSidebar.getFlowList().getSelectedValue();
+        Flow flow = flowManager.getAllFlows().get(flowName);
+        if (flow == null) return;
+
+        // remove entries in descending order to keep indices valid
+        Arrays.sort(rows);
+        for (int i = rows.length - 1; i >= 0; i--) {
+            flow.getEntries().remove(rows[i]);
+        }
+        
+        populateRequestGrid(flowName);
     }
 }
