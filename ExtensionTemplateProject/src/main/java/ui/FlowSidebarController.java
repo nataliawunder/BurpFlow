@@ -32,7 +32,7 @@ public class FlowSidebarController {
             }
         });
 
-        sidebar.getEditButton().addActionListener(e -> {
+        sidebar.getRenameButton().addActionListener(e -> {
             String selected = sidebar.getFlowList().getSelectedValue();
             if (selected == null) {
                 JOptionPane.showMessageDialog(sidebar, "Select a flow to rename.", "Edit Flow", JOptionPane.WARNING_MESSAGE);

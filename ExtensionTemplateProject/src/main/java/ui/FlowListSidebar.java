@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class FlowListSidebar extends JPanel {
     private JButton addButton;
-    private JButton editButton;
+    private JButton renameButton;
     private JButton deleteButton;
     private JButton refreshButton;
     // private JTextField searchField;
@@ -22,7 +22,7 @@ public class FlowListSidebar extends JPanel {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
         addButton = new JButton("Add Flow");
-        editButton = new JButton("Edit Flow");
+        renameButton = new JButton("Rename Flow");
         deleteButton = new JButton("Delete Flow");
         refreshButton = new JButton("\u21BB");
         refreshButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
@@ -31,12 +31,12 @@ public class FlowListSidebar extends JPanel {
         Dimension buttonSize = new Dimension(100, 25);
         Dimension smallButtonSize = new Dimension(50, 25);
         addButton.setPreferredSize(buttonSize);
-        editButton.setPreferredSize(buttonSize);
+        renameButton.setPreferredSize(buttonSize);
         deleteButton.setPreferredSize(buttonSize);
         refreshButton.setPreferredSize(smallButtonSize);
 
         buttonPanel.add(addButton);
-        buttonPanel.add(editButton);
+        buttonPanel.add(renameButton);
         buttonPanel.add(deleteButton);
         buttonPanel.add(refreshButton);
 
@@ -82,8 +82,8 @@ public class FlowListSidebar extends JPanel {
         return addButton;
     }
 
-    public JButton getEditButton() {
-        return editButton;
+    public JButton getRenameButton() {
+        return renameButton;
     }
 
     public JButton getDeleteButton() {
