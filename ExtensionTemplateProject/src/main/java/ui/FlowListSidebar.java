@@ -13,8 +13,8 @@ public class FlowListSidebar extends JPanel {
 
     public FlowListSidebar() {
         setLayout(new BorderLayout());
-        setMinimumSize(new Dimension(350, 0));
-        setMaximumSize(new Dimension(350, Integer.MAX_VALUE));
+        setMinimumSize(new Dimension(400, 0));
+        setMaximumSize(new Dimension(400, Integer.MAX_VALUE));
 
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));

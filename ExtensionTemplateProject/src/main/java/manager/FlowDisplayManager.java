@@ -237,6 +237,10 @@ public class FlowDisplayManager {
         JMenuItem repeaterItem = new JMenuItem("Send to Repeater");
         repeaterItem.addActionListener(ae -> {
             // String flowName = flowListSidebar.getFlowList().getSelectedValue();
+            // FlowEntry entry = flowManager.getAllFlows()
+            //                     .get(flowName)
+            //                     .getEntries()
+            //                     .get(row);
             FlowEntry entry = visibleEntries.get(row);
             if (entry.getRequest() != null) {
                 montoyaApi.repeater().sendToRepeater(

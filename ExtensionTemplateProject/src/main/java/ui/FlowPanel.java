@@ -48,7 +48,7 @@ public class FlowPanel extends JPanel {
             flowListSidebar
         );
         mainSplit.setResizeWeight(1.0);
-        mainSplit.setDividerLocation(1500);
+        mainSplit.setDividerLocation(1475);
         mainSplit.setOneTouchExpandable(true);
         mainSplit.setDividerSize(16);
 
