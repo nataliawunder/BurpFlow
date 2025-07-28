@@ -94,7 +94,10 @@ public class FlowDisplayManager {
         requestTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
+                montoyaApi.logging().logToOutput("[Debug] Mouse Event");
                 if (e.isPopupTrigger() && requestTable.isEnabled()) {
+                    // debug
+                    montoyaApi.logging().logToOutput("[Debug] Mouse is Released");
                     int row = requestTable.rowAtPoint(e.getPoint());
                     if (row < 0) {
                         return;
@@ -159,7 +162,9 @@ public class FlowDisplayManager {
             int idx = -1;
             if (request != null) {
                 int found = findMatchingIndex(history, request);
-                if (found >= 0) idx = found + 1;
+                if (found >= 0) {
+                    idx = found + 1;
+                }
             }
             RowData rowData = new RowData(entry, idx);
             
@@ -276,11 +281,15 @@ public class FlowDisplayManager {
     private void deleteSelectedRequests() {
         JTable table = requestGrid.getRequestTable();
         int[] rows = table.getSelectedRows();
-        if (rows.length == 0) return;
+        if (rows.length == 0) {
+            return;
+        }
 
         String flowName = flowListSidebar.getFlowList().getSelectedValue();
         Flow flow = flowManager.getAllFlows().get(flowName);
-        if (flow == null) return;
+        if (flow == null) {
+            return;
+        }
 
         // remove entries in descending order to keep indices valid
         Arrays.sort(rows);

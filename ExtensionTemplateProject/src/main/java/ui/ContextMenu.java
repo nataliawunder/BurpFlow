@@ -30,22 +30,26 @@ public class ContextMenu implements ContextMenuItemsProvider {
 
         List<Component> menuItemList = new ArrayList<>();
 
-        JMenuItem beginFlowItem = new JMenuItem("Begin Flow on Next Http");
-        beginFlowItem.addActionListener(l -> {
-            String flowName = flowManager.createNextSequentialFlow();
-            flowManager.setActiveFlow(flowName);
-            montoyaApi.logging().logToOutput("Started new flow: " + flowName);
+        if (!flowManager.isFlowActive()) {
+            JMenuItem beginFlowItem = new JMenuItem("Begin Flow on Next Request");
+            beginFlowItem.addActionListener(l -> {
+                String flowName = flowManager.createNextSequentialFlow();
+                flowManager.setActiveFlow(flowName);
+                montoyaApi.logging().logToOutput("Started new flow: " + flowName);
 
-            flowDisplayManager.refreshFlowList();
-        });
-        menuItemList.add(beginFlowItem);
-
-        JMenuItem stopFlowItem = new JMenuItem("Stop Current Flow");
-        stopFlowItem.addActionListener(l -> {
-            flowManager.endCurrentFlow();
-            montoyaApi.logging().logToOutput("Stopped current flow.");
-        });
-        menuItemList.add(stopFlowItem);
+                flowDisplayManager.refreshFlowList();
+            });
+            menuItemList.add(beginFlowItem);
+        }
+        
+        if (flowManager.isFlowActive()) {
+            JMenuItem stopFlowItem = new JMenuItem("Stop Current Flow");
+            stopFlowItem.addActionListener(l -> {
+                flowManager.endCurrentFlow();
+                montoyaApi.logging().logToOutput("Stopped current flow.");
+            });
+            menuItemList.add(stopFlowItem);
+        }
 
         JMenu addRequestMenu = new JMenu("Add Request to Flow");
         JMenuItem createNewFlowItem = new JMenuItem("Create New Flow");
