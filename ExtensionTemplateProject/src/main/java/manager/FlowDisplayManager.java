@@ -236,7 +236,7 @@ public class FlowDisplayManager {
 
         JMenuItem repeaterItem = new JMenuItem("Send to Repeater");
         repeaterItem.addActionListener(ae -> {
-            String flowName = flowListSidebar.getFlowList().getSelectedValue();
+            // String flowName = flowListSidebar.getFlowList().getSelectedValue();
             FlowEntry entry = visibleEntries.get(row);
             if (entry.getRequest() != null) {
                 montoyaApi.repeater().sendToRepeater(
@@ -252,11 +252,12 @@ public class FlowDisplayManager {
 
         JMenuItem intruderItem = new JMenuItem("Send to Intruder");
         intruderItem.addActionListener(ae -> {
-            String flowName = flowListSidebar.getFlowList().getSelectedValue();
-            FlowEntry entry = flowManager.getAllFlows()
-                                .get(flowName)
-                                .getEntries()
-                                .get(row);
+            // String flowName = flowListSidebar.getFlowList().getSelectedValue();
+            // FlowEntry entry = flowManager.getAllFlows()
+            //                     .get(flowName)
+            //                     .getEntries()
+            //                     .get(row);
+            FlowEntry entry = visibleEntries.get(row);
             if (entry.getRequest() != null) {
                 montoyaApi.intruder().sendToIntruder(
                     entry.getRequest()
@@ -295,7 +296,8 @@ public class FlowDisplayManager {
         // remove entries in descending order to keep indices valid
         Arrays.sort(rows);
         for (int i = rows.length - 1; i >= 0; i--) {
-            flow.getEntries().remove(rows[i]);
+            FlowEntry toRemove = visibleEntries.get(rows[i]);
+            flow.getEntries().remove(toRemove);
         }
         
         populateRequestGrid(flowName);

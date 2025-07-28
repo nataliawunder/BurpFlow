@@ -13,8 +13,8 @@ public class FlowListSidebar extends JPanel {
 
     public FlowListSidebar() {
         setLayout(new BorderLayout());
-        setMinimumSize(new Dimension(250, 0));
-        setMaximumSize(new Dimension(250, Integer.MAX_VALUE));
+        setMinimumSize(new Dimension(350, 0));
+        setMaximumSize(new Dimension(350, Integer.MAX_VALUE));
 
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
@@ -28,7 +28,7 @@ public class FlowListSidebar extends JPanel {
         refreshButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
         refreshButton.setToolTipText("Refresh Flows");
 
-        Dimension buttonSize = new Dimension(100, 25);
+        Dimension buttonSize = new Dimension(110, 25);
         Dimension smallButtonSize = new Dimension(50, 25);
         addButton.setPreferredSize(buttonSize);
         renameButton.setPreferredSize(buttonSize);
