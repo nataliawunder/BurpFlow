@@ -28,6 +28,7 @@ public class FlowDisplayManager {
     private final RequestGrid requestGrid;
     private final FlowListSidebar flowListSidebar;
     private final DefaultListModel<String> listModel;
+    private List<FlowEntry> visibleEntries = new ArrayList<>();
     private final MontoyaApi montoyaApi;
 
     public FlowDisplayManager(MontoyaApi montoyaApi, FlowManager flowManager, RequestGrid requestGrid, FlowListSidebar flowListSidebar, FlowPanel flowPanel) {
@@ -66,7 +67,7 @@ public class FlowDisplayManager {
 
             String flowName = flowListSidebar.getFlowList().getSelectedValue();
             Flow flow = flowManager.getAllFlows().get(flowName);
-            FlowEntry entry = flow.getEntries().get(row);
+            FlowEntry entry = visibleEntries.get(row);
 
             HttpRequestEditor requestEditor  = flowPanel.getRequestEditor();
             HttpResponseEditor responseEditor = flowPanel.getResponseEditor();
@@ -177,9 +178,11 @@ public class FlowDisplayManager {
 
         numbered.sort(Comparator.comparingInt(rd -> rd.proxyIdx));
 
-        List<RowData> allData = new ArrayList<>(unnumbered);
+        List<RowData> allData = new ArrayList<>();
+        allData.addAll(unnumbered);
         allData.addAll(numbered);
 
+        visibleEntries.clear();
         for (RowData rd : allData) {
             FlowEntry entry = rd.entry;
             String displayNum = "";
@@ -200,6 +203,7 @@ public class FlowDisplayManager {
                 entry.ip()
             };
             model.addRow(row);
+            visibleEntries.add(entry);
         }
 
         model.fireTableDataChanged();
@@ -233,10 +237,7 @@ public class FlowDisplayManager {
         JMenuItem repeaterItem = new JMenuItem("Send to Repeater");
         repeaterItem.addActionListener(ae -> {
             String flowName = flowListSidebar.getFlowList().getSelectedValue();
-            FlowEntry entry = flowManager.getAllFlows()
-                                .get(flowName)
-                                .getEntries()
-                                .get(row);
+            FlowEntry entry = visibleEntries.get(row);
             if (entry.getRequest() != null) {
                 montoyaApi.repeater().sendToRepeater(
                     entry.getRequest()
