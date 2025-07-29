@@ -50,8 +50,6 @@ public class FlowDisplayManager {
         flowList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 String selected = flowList.getSelectedValue();
-                // debug
-                // montoyaApi.logging().logToOutput("FlowDisplayManager selected: " + selected);
                 if (selected != null) {
                     populateRequestGrid(selected);
                 }
@@ -195,19 +193,8 @@ public class FlowDisplayManager {
         for (RowData rd : allData) {
             FlowEntry entry = rd.entry;
             String displayNum = "";
-            // if (rd.proxyIdx > 0) {
-            //     displayNum = String.valueOf(rd.proxyIdx);
-            // } else {
-            //     displayNum = "";
-            // }
             
             boolean useProxyNumbers = uiManager.getConfig().isUsingProxyNumbers();
-            // if (useProxyNumbers && rd.proxyIdx > 0) {
-            //     displayNum = String.valueOf(rd.proxyIdx);
-            // } else {
-            //     displayNum = String.valueOf(visibleEntries.size() + 1);
-            // }
-
             if (useProxyNumbers) {
                 // proxy mode: only show if we have a valid proxyIdx
                 if (rd.proxyIdx > 0) {
@@ -264,11 +251,6 @@ public class FlowDisplayManager {
 
         JMenuItem repeaterItem = new JMenuItem("Send to Repeater");
         repeaterItem.addActionListener(ae -> {
-            // String flowName = flowListSidebar.getFlowList().getSelectedValue();
-            // FlowEntry entry = flowManager.getAllFlows()
-            //                     .get(flowName)
-            //                     .getEntries()
-            //                     .get(row);
             FlowEntry entry = visibleEntries.get(row);
             if (entry.getRequest() != null) {
                 montoyaApi.repeater().sendToRepeater(
@@ -284,11 +266,6 @@ public class FlowDisplayManager {
 
         JMenuItem intruderItem = new JMenuItem("Send to Intruder");
         intruderItem.addActionListener(ae -> {
-            // String flowName = flowListSidebar.getFlowList().getSelectedValue();
-            // FlowEntry entry = flowManager.getAllFlows()
-            //                     .get(flowName)
-            //                     .getEntries()
-            //                     .get(row);
             FlowEntry entry = visibleEntries.get(row);
             if (entry.getRequest() != null) {
                 montoyaApi.intruder().sendToIntruder(
