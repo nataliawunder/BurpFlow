@@ -61,7 +61,7 @@ public class ReadmePanel extends JPanel {
                     <ul>
                         <li><b>Scope MUST be set in order for sequential flows to capture.</b></li>
                         <li><b>Only manually added flows will persist in projects.</b> In order to save sequential flows, please manually add them to a flow before leaving a project.</li>
-                        <li><b>While using BurpFlow, do not clear or delete the Proxy History</b> The Proxy ID only shows for manually added requests only, but if you clear or delete Proxy history, the ID shown in BurpFlow will NOT match the ID shown in the Proxy.</li>
+                        <li><b>While using BurpFlow, do not clear or delete the Proxy History</b> The Proxy ID only shows for manually added requests only, but if you clear or delete Proxy history, the ID shown in BurpFlow will NOT match the ID shown in the Proxy. This setting may be toggled on or off in the Configuration Tab.</li>
                         <li><b>Ensure a flow is selected and highlighted blue in the sidebar when selecting or right-clicking a request.</b> The action may not occur if the flow is not highlighted.</li>
                     </ul>
 
@@ -75,6 +75,7 @@ public class ReadmePanel extends JPanel {
                     <ul>
                         <li>Persistence for sequential flows</li>
                         <li>Full ID implementation that matches Burp's Proxy</li>
+                        <li>Allow sequential flows to be captured without requiring scope to be set</li>
                         <li>Configuration to toggle Proxy highlighting off</li>
                     </ul>
 
