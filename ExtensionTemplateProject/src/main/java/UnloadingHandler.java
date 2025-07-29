@@ -5,6 +5,7 @@ import burp.api.montoya.persistence.PersistedObject;
 import manager.FlowDisplayManager;
 import manager.FlowEntry;
 import manager.Flow;
+import config.Config;
 
 import java.util.Map;
 
@@ -12,11 +13,12 @@ public class UnloadingHandler implements ExtensionUnloadingHandler{
 
     private MontoyaApi montoyaApi;
     private FlowDisplayManager flowDisplayManager;
-    // private final Gson gson = new Gson();
+    private Config config = new Config();
 
-    public UnloadingHandler(MontoyaApi montoyaApi, FlowDisplayManager flowDisplayManager) {
+    public UnloadingHandler(MontoyaApi montoyaApi, FlowDisplayManager flowDisplayManager, Config config) {
         this.montoyaApi = montoyaApi;
         this.flowDisplayManager = flowDisplayManager;
+        this.config = config;
 
     }
 
@@ -51,6 +53,8 @@ public class UnloadingHandler implements ExtensionUnloadingHandler{
             }
         }
 
+        root.setBoolean("useProxyNumbers", config.isUsingProxyNumbers());
+        
         root.setInteger("flowCounter", flowDisplayManager.getFlowManager().getNextFlowCounter());
     }
 }

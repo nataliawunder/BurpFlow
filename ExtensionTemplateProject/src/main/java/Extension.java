@@ -9,8 +9,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import ui.*;
-import ui.UIManager;
 import manager.*;
+import config.*;
 
 public class Extension implements BurpExtension {
     private FlowManager flowManager;
@@ -20,12 +20,19 @@ public class Extension implements BurpExtension {
         montoyaApi.extension().setName("BurpFlow");
 
         UIManager uiManager = new UIManager(montoyaApi);
-        uiManager.registerUI();
         
         flowManager = new FlowManager();
         
         // restore flows from the project
         PersistedObject root = montoyaApi.persistence().extensionData();
+
+        Config config = uiManager.getConfig();
+        Boolean useProxy = root.getBoolean("useProxyNumbers");
+        if (useProxy != null) {
+            config.setUsingProxyNumbers(useProxy);
+        }
+        
+        uiManager.registerUI();
 
         for (String flowName : root.childObjectKeys()) {
             PersistedObject flowPersisted = root.getChildObject(flowName);
@@ -62,11 +69,11 @@ public class Extension implements BurpExtension {
         FlowListSidebar flowListSidebar = flowPanel.getFlowListSidebar();
         RequestGrid requestGrid = flowPanel.getRequestGrid();
 
-        FlowDisplayManager flowDisplayManager = new FlowDisplayManager(montoyaApi, flowManager, requestGrid, flowListSidebar, flowPanel);
+        FlowDisplayManager flowDisplayManager = new FlowDisplayManager(montoyaApi, uiManager, flowManager, requestGrid, flowListSidebar, flowPanel);
         
         montoyaApi.userInterface().registerContextMenuItemsProvider(new ui.ContextMenu(montoyaApi, flowManager, flowDisplayManager));
         
         // unload with persistence
-        montoyaApi.extension().registerUnloadingHandler(new UnloadingHandler(montoyaApi, flowDisplayManager));
+        montoyaApi.extension().registerUnloadingHandler(new UnloadingHandler(montoyaApi, flowDisplayManager, uiManager.getConfig()));
     }
 }

@@ -4,6 +4,7 @@ import ui.FlowListSidebar;
 import ui.FlowPanel;
 import ui.FlowSidebarController;
 import ui.RequestGrid;
+import ui.UIManager;
 
 import burp.api.montoya.MontoyaApi;
 import burp.api.montoya.http.message.HttpRequestResponse;
@@ -30,12 +31,14 @@ public class FlowDisplayManager {
     private final DefaultListModel<String> listModel;
     private List<FlowEntry> visibleEntries = new ArrayList<>();
     private final MontoyaApi montoyaApi;
+    private final UIManager uiManager;
 
-    public FlowDisplayManager(MontoyaApi montoyaApi, FlowManager flowManager, RequestGrid requestGrid, FlowListSidebar flowListSidebar, FlowPanel flowPanel) {
+    public FlowDisplayManager(MontoyaApi montoyaApi, UIManager uiManager, FlowManager flowManager, RequestGrid requestGrid, FlowListSidebar flowListSidebar, FlowPanel flowPanel) {
         this.flowManager = flowManager;
         this.requestGrid = requestGrid;
         this.flowListSidebar = flowListSidebar;
         this.montoyaApi = montoyaApi;
+        this.uiManager = uiManager;
 
         new FlowSidebarController(flowManager, this, flowListSidebar);
         listModel = new DefaultListModel<>();
@@ -192,10 +195,29 @@ public class FlowDisplayManager {
         for (RowData rd : allData) {
             FlowEntry entry = rd.entry;
             String displayNum = "";
-            if (rd.proxyIdx > 0) {
-                displayNum = String.valueOf(rd.proxyIdx);
+            // if (rd.proxyIdx > 0) {
+            //     displayNum = String.valueOf(rd.proxyIdx);
+            // } else {
+            //     displayNum = "";
+            // }
+            
+            boolean useProxyNumbers = uiManager.getConfig().isUsingProxyNumbers();
+            // if (useProxyNumbers && rd.proxyIdx > 0) {
+            //     displayNum = String.valueOf(rd.proxyIdx);
+            // } else {
+            //     displayNum = String.valueOf(visibleEntries.size() + 1);
+            // }
+
+            if (useProxyNumbers) {
+                // proxy mode: only show if we have a valid proxyIdx
+                if (rd.proxyIdx > 0) {
+                    displayNum = String.valueOf(rd.proxyIdx);
+                } else {
+                    displayNum = "";
+                }
             } else {
-                displayNum = "";
+                // sequential mode: number each row 1,2,3...
+                displayNum = String.valueOf(visibleEntries.size() + 1);
             }
 
             Object[] row = new Object[]{

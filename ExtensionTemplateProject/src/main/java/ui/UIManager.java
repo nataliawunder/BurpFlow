@@ -1,13 +1,15 @@
 package ui;
 
+import config.Config;
+import config.ConfigPanel;
 import burp.api.montoya.MontoyaApi;
 
 import javax.swing.*;
-import java.awt.BorderLayout;
 
 public class UIManager {
     private final MontoyaApi montoyaApi;
     private final FlowPanel flowPanel;
+    private final Config config = new Config();
 
     public UIManager(MontoyaApi montoyaApi) {
         this.montoyaApi = montoyaApi;
@@ -19,12 +21,9 @@ public class UIManager {
 
         burpFlowTabs.addTab("Flow Manager", flowPanel);
 
-        // TO DO: SET UP CONFIGURATION TAB
-        JPanel configPanel = new JPanel(new BorderLayout());
-        configPanel.add(new JLabel("To do", SwingConstants.CENTER), BorderLayout.CENTER);
+        JPanel configPanel = new ConfigPanel(config);
         burpFlowTabs.addTab("Configurations", configPanel);
 
-        // TO DO: SET UP HELP TAB WITH README
         JPanel helpPanel = new ReadmePanel();
         burpFlowTabs.addTab("Help", helpPanel);
 
@@ -33,5 +32,9 @@ public class UIManager {
 
     public FlowPanel getFlowPanel() {
         return flowPanel;
+    }
+
+    public Config getConfig() {
+        return config;
     }
 }
