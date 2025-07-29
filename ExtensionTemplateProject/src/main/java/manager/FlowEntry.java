@@ -76,12 +76,30 @@ public class FlowEntry {
         return "";
     }
 
+    // public String mimeType() {
+    //     if (interceptedResponse.isPresent()) {
+    //         return interceptedResponse.get().mimeType().toString();
+    //     }
+    //     if (httpRequestResponse != null && httpRequestResponse.response() != null) {
+    //         return httpRequestResponse.response().mimeType().toString();
+    //     }
+    //     return "";
+    // }
+
     public String mimeType() {
         if (interceptedResponse.isPresent()) {
-            return interceptedResponse.get().mimeType().toString();
+            String type = interceptedResponse.get().mimeType().toString();
+            if (type.equalsIgnoreCase("NONE")) {
+                return "";
+            }
+            return type;
         }
         if (httpRequestResponse != null && httpRequestResponse.response() != null) {
-            return httpRequestResponse.response().mimeType().toString();
+            String type = httpRequestResponse.response().mimeType().toString();
+            if (type.equalsIgnoreCase("NONE")) {
+                return "";
+            }
+            return type;
         }
         return "";
     }
