@@ -27,6 +27,7 @@ public class ReadmePanel extends JPanel {
                     <h2>BurpFlow allows web vulnerability testers to group related HTTP requests
                     into user-defined, logical workflows representing application behavior, including multi-step actions 
                     or entire sessions, to improve efficiency and traceability.</h2>
+                    <h2>GitHub Repository: https://github.com/nataliawunder/BurpFlow</h2>
                     <h2>Created by Natalia Wunder</h2>
 
                     <br>
@@ -81,7 +82,7 @@ public class ReadmePanel extends JPanel {
 
                     <br>
                     <h2>Help & Feedback</h2>
-                    <p>For feedback and bug reports, please contact natalia.wunder@guidepointsecurity.com or visit BurpFlow's GitHub Repository at https://github.com/nataliawunder/BurpFlow.</p>
+                    <p>For feedback and bug reports, please contact <b>natalia.wunder@guidepointsecurity.com</b> or visit BurpFlow's GitHub Repository at <b>https://github.com/nataliawunder/BurpFlow</b>.</p>
 
                     <br>
                     <h2>Acknowledments</h2>
