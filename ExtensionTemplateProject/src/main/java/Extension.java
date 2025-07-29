@@ -48,6 +48,11 @@ public class Extension implements BurpExtension {
             flowManager.getAllFlows().put(flowName, flow);
         }
 
+        Integer persistedCounter = root.getInteger("flowCounter");
+        if (persistedCounter != null) {
+            flowManager.setNextFlowCounter(persistedCounter);
+        }
+
         RequestManager requestManager = new RequestManager(montoyaApi, flowManager);
         RequestProcessor requestProcessor = new RequestProcessor(requestManager);
         montoyaApi.proxy().registerRequestHandler(requestProcessor);

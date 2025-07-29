@@ -20,10 +20,27 @@ public class FlowManager {
     }
 
     // functions for context menu
+    // public String createNextSequentialFlow() {
+    //     String newFlowName = "New Flow " + flowCounter++;
+    //     flowMap.put(newFlowName, new Flow(newFlowName));
+    //     return newFlowName;
+    // }
     public String createNextSequentialFlow() {
-        String newFlowName = "New Flow " + flowCounter++;
-        flowMap.put(newFlowName, new Flow(newFlowName));
-        return newFlowName;
+        String newName;
+        do {
+            newName = "New Flow " + flowCounter++;
+        } while (flowMap.containsKey(newName));
+
+        flowMap.put(newName, new Flow(newName));
+        return newName;
+    }
+
+    public int getNextFlowCounter() {
+        return flowCounter;
+    }
+
+    public void setNextFlowCounter(int next) {
+        this.flowCounter = next;
     }
     
     public void setActiveFlow(String flowName) {

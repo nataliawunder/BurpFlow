@@ -50,5 +50,7 @@ public class UnloadingHandler implements ExtensionUnloadingHandler{
                 }
             }
         }
+
+        root.setInteger("flowCounter", flowDisplayManager.getFlowManager().getNextFlowCounter());
     }
 }
