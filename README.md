@@ -82,8 +82,7 @@ To build the `.jar` file:
 
 For feedback, feature requests or bug reports, please contact:
 
-**natalia.wunder@guidepointsecurity.com**  
-**[BurpFlow GitHub Repository](https://github.com/nataliawunder/BurpFlow)**
+**natalia.wunder@guidepointsecurity.com**
 
 ---
 
