@@ -84,7 +84,8 @@ public class ReadmePanel extends JPanel {
 
                     <br>
                     <h2>Acknowledments</h2>
-                    <p>I want to give a very special thank you to my mentor, Aaron Levin, Elle Stehli, Gaberiel Bearden, and the GPSU Team for the support during my internship here at GuidePoint. This would not be possible without all your support!</p>
+                    <p>A special thank you to Aaron Levin and the GPSU Team for all your guidance and support during my internship at GuidePoint Security University. This project wouldn't have been possible without you! 
+                    Additionally, thank you to Elle Stehli and Gaberiel Bearden for your help in implementation ideas for the Proxy ID functionality and cross-functionality debugging, respectively.</p>
                     <br>
                 </body>
             </html>

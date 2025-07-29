@@ -92,33 +92,19 @@ public class FlowDisplayManager {
             }
         });
 
-        // mousePressed
-        // make inside handlepopup MouseEvent e private
         requestTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                montoyaApi.logging().logToOutput("[Debug] Mouse Event");
-                if (e.isPopupTrigger() && requestTable.isEnabled()) {
-                    // debug
-                    montoyaApi.logging().logToOutput("[Debug] Mouse is Released");
-                    int row = requestTable.rowAtPoint(e.getPoint());
-                    if (row < 0) {
-                        return;
-                    }
-                    if (!requestTable.getSelectionModel().isSelectedIndex(row)) {
-                        requestTable.getSelectionModel()
-                            .setSelectionInterval(row, row);
-                    }
-                    showRequestPopup(e, row);
-                }
+                handlePopup(e);
             }
 
             @Override
             public void mousePressed(MouseEvent e) {
-                montoyaApi.logging().logToOutput("[Debug] Mouse Event");
+                handlePopup(e);
+            }
+
+            private void handlePopup(MouseEvent e) {
                 if (e.isPopupTrigger() && requestTable.isEnabled()) {
-                    // debug
-                    montoyaApi.logging().logToOutput("[Debug] Mouse is Released");
                     int row = requestTable.rowAtPoint(e.getPoint());
                     if (row < 0) {
                         return;
