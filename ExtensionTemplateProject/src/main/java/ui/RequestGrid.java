@@ -39,4 +39,9 @@ public class RequestGrid extends JPanel {
         return tableModel;
     }
 
+    public void setIdColumnHeader(String header) {
+        getRequestTable().getColumnModel().getColumn(0).setHeaderValue(header);
+        getRequestTable().getTableHeader().repaint();
+    }
+
 }

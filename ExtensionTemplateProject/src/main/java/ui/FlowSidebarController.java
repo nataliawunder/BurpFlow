@@ -65,6 +65,7 @@ public class FlowSidebarController {
             allFlows = flowManager.getAllFlows().keySet().stream().collect(Collectors.toList());
             displayManager.refreshFlowList();
             displayManager.refreshCurrentFlowRequests();
+            displayManager.updateIdColumnHeader();
         });
     }
 }

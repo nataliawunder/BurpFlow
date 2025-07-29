@@ -46,6 +46,7 @@ public class FlowDisplayManager {
         flowList.setModel(listModel);
 
         refreshFlowList();
+        updateIdColumnHeader();
 
         flowList.addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
@@ -118,6 +119,17 @@ public class FlowDisplayManager {
                 }
             }
         });
+    }
+
+    public void updateIdColumnHeader() {
+        boolean useProxy = uiManager.getConfig().isUsingProxyNumbers();
+        String header = "";
+        if (useProxy) {
+            header = "Proxy #";
+        } else {
+            header = "#";
+        }
+        requestGrid.setIdColumnHeader(header); 
     }
 
     public void refreshFlowList() {
@@ -225,6 +237,7 @@ public class FlowDisplayManager {
         JTable updateRequestGrid = requestGrid.getRequestTable();
         updateRequestGrid.revalidate();
         updateRequestGrid.repaint();
+        updateIdColumnHeader();
     }
 
     private int findMatchingIndex(List<ProxyHttpRequestResponse> history, HttpRequestResponse target) {
