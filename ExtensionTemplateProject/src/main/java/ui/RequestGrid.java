@@ -18,13 +18,14 @@ public class RequestGrid extends JPanel {
         tableModel = new DefaultTableModel(COLUMN_NAMES, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return column == 6;
+                return false;
             }
         };
 
         requestTable = new JTable(tableModel);
         requestTable.setFillsViewportHeight(true);
         requestTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        requestTable.getTableHeader().setReorderingAllowed(false);
 
         JScrollPane scrollPane = new JScrollPane(requestTable);
         add(scrollPane, BorderLayout.CENTER);
