@@ -48,7 +48,7 @@ Once a flow is selected:
 - **Only manually added flows will persist in projects**  
   To save sequential flows, manually add them to a flow before leaving a project
 - **Do not clear or delete the Proxy History**  
-  Proxy IDs only show for manually added requests. If you delete the history, IDs in BurpFlow will no longer match those in the Proxy tab
+  Proxy IDs only show for manually added requests. If you delete the history, IDs in BurpFlow will no longer match those in the Proxy tab. The Proxy ID setting may be toggled on or off in the Configuration Tab.
 - **Ensure a flow is selected and highlighted in blue** in the sidebar when selecting or right-clicking a request.  
   The action may not occur if the flow is not highlighted
 
@@ -72,7 +72,8 @@ To build the `.jar` file:
 ## Future Implementations
 
 - Persistence for sequential flows  
-- Full Proxy ID matching for all requests  
+- Full Proxy ID matching for all requests
+- Sequential flow capture without set scope
 - Option to toggle Proxy highlight behavior
 
 ---
