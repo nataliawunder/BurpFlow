@@ -25,8 +25,7 @@ public class UIManager {
         burpFlowTabs.addTab("Configurations", configPanel);
 
         // TO DO: SET UP HELP TAB WITH README
-        JPanel helpPanel = new JPanel(new BorderLayout());
-        helpPanel.add(new JLabel("ReadMe", SwingConstants.CENTER), BorderLayout.CENTER);
+        JPanel helpPanel = new ReadmePanel();
         burpFlowTabs.addTab("Help", helpPanel);
 
         montoyaApi.userInterface().registerSuiteTab("BurpFlow", burpFlowTabs);
